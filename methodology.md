@@ -1,216 +1,340 @@
-# Digital Multimeter (DMM)
+# Electronic Load
 
-A **Digital Multimeter (DMM)** is a versatile electronic instrument used for measuring electrical parameters such as voltage, current, and resistance. It is an essential tool for diagnosing, troubleshooting, and testing electronic circuits and systems.
+An **Electronic Load** is a programmable instrument used to simulate various electrical loads by dissipating power from a **Device Under Test (DUT)**. It is commonly used in semiconductor validation, power supply testing, and battery performance evaluation.
 
 ---
 
 ## **Key Features**
-### **Accurate Voltage Measurement**
-- Measures both **AC and DC voltage** with high precision.
-- Supports a wide range of voltage levels for various applications.
 
-### **Current Measurement**
-- Measures **AC and DC current** with selectable ranges.
-- Includes protection against overcurrent to prevent damage.
+### **Constant Operating Modes**
+- **Constant Current (CC):** Maintains a fixed current regardless of voltage changes.
+- **Constant Voltage (CV):** Holds a steady voltage while varying current.
+- **Constant Power (CP):** Regulates power consumption by adjusting current and voltage.
+- **Constant Resistance (CR):** Simulates a fixed resistive load for testing.
 
-### **Resistance and Continuity Testing**
-- Accurately measures resistance values across components.
-- Provides a **continuity test** with audible alerts to detect closed circuits.
+### **Dynamic Load Simulation**
+- Supports fast load changes to simulate real-world operating conditions.
+- Allows accurate evaluation of transient response and stability.
 
-### **Capacitance and Frequency Measurement**
-- Measures capacitance to verify the condition of capacitors.
-- Analyzes signal frequency to ensure consistent waveform characteristics.
+### **Parallel and Series Operation**
+- Enables connection of multiple loads to handle high-power applications.
+- Supports both parallel and series configurations for greater flexibility.
 
 ---
 
 ## **Applications**
-### **Circuit Troubleshooting**
-- Identifies faulty components and incorrect connections.
-- Measures voltage drops, continuity, and current to diagnose issues.
 
-### **Electrical System Testing**
-- Ensures compliance with electrical standards by verifying system voltage and current.
-- Validates wiring integrity through continuity and resistance tests.
+### **Power Supply Testing**
+- Verifies the performance and stability of power supplies under different load conditions.
+- Evaluates output voltage regulation, efficiency, and ripple response.
 
-### **Component Testing**
-- Measures component characteristics such as resistance, capacitance, and frequency.
-- Ensures that components function within expected tolerances.
+### **Battery and Fuel Cell Testing**
+- Simulates discharge profiles to assess battery capacity and lifecycle.
+- Measures internal resistance and validates the efficiency of energy storage systems.
+
+### **Semiconductor Validation**
+- Tests voltage and current limits of semiconductor devices.
+- Evaluates thermal performance and safe operating areas (SOA).
+
+### **DC-DC Converter Analysis**
+- Assesses the dynamic response and efficiency of DC-DC converters.
+- Simulates load changes to evaluate switching performance.
 
 ---
 
 ## **Advantages**
-### **High Measurement Accuracy**
-- Delivers consistent and accurate readings across different ranges.
-- Reduces uncertainty in measurement results.
 
-### **Portability and Ease of Use**
-- Compact and lightweight, making it ideal for field use.
-- Simple interface with intuitive controls for quick operation.
+### **High Accuracy and Resolution**
+- Provides precise control over load conditions.
+- Ensures reliable results for sensitive applications.
 
-### **Versatility and Multi-Functionality**
-- Combines multiple measurement functions into one device.
-- Suitable for use in various electrical and electronic applications.
+### **Versatile and Configurable**
+- Supports multiple operating modes to suit a variety of test scenarios.
+- Offers programmable sequences to automate testing processes.
+
+### **Protection and Safety Features**
+- Includes overvoltage, overcurrent, and overpower protection.
+- Prevents damage to both the DUT and the electronic load.
 
 ---
 
 ## **Abstract Methods**
 ---
 
-### 1. `StopMeasurement`
+### 1. `Abort`
 #### Description
-Stops the previously initiated measurement. This function halts any ongoing measurements and returns the DMM to an idle state.
+Stops any ongoing operations on the Electronic Load, bringing it to a safe state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
+|:--:|:----------|:----:|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 2. `TerminateSession`
+### 2. `Close`
 #### Description
-Terminates the instrument session. This function ends the connection with the DMM and releases system resources.
+Terminates the instrument session of the Electronic Load, releasing all allocated resources.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | operation | string | Close & Destroy, Destroy & Don't Close | Close & Destroy |
-
-#### Output Parameters
-None
-
-### 3. `SetNPLC`
-#### Description
-Configures the number of Power Line Cycles (NPLC) in a DMM. This setting affects measurement integration time and noise rejection.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Function | Enum | DC Volts, AC Volts, DC Current, AC Current, Diode, Power Meter, Capacitance, Temperature, Frequency, 2-Wire Resistance, 4 Wire Resistance | DC Volts|
-| 4 | NPLC | Double | - | 0.02 |
-
-#### Output Parameters
-None
-
-### 4. `ConfigureMeasurement`
-#### Description
-Sets up the measurement function, range, and resolution in digits for a DMM. This function configures the basic measurement parameters.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Resolution in digits | Enum | 3 1/2, 4 1/2, 5 1/2, 6 1/2, 7 1/2, 8 1/2 | 8 1/2|
-| 4 | Function | Enum | DC Volts, AC Volts, DC Current, AC Current, Diode, Power Meter, Capacitance, Temperature, Frequency, 2-Wire Resistance, 4 Wire Resistance | DC Volts|
-| 5 | Range | Double | - | 0.02 |
-| 6 | Additional info | Object | - | - |
-
-#### Output Parameters
-None
-
-### 5. `ToggleDisplay`
-#### Description
-Enables or disables the display on the DMM. This function controls the front panel display visibility.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Display | Enum | ON, OFF | ON |
-
-#### Output Parameters
-None
-
-### 6. `SetupMultiPointTrigger`
-#### Description
-Configures the trigger source, trigger count, readings per trigger event, and sample interval to enable multipoint functionality for automated measurements.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Trigger Source | Enum | Auto, Immediate, External, Manual, Bus/Source | Immediate |
-| 4 | Trigger Count | Integer | - | 1 |
-| 5 | Sample Count | Integer | - | 1 |
-| 6 | Sample Interval | Integer | - | 0 |
-
-#### Output Parameters
-None
-
-### 7. `InitializeSession`
-#### Description
-Initializes the session of the DMM. This function establishes communication with the instrument and prepares it for operation.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Operation | Enum | Create New Session, Fetch Existing Session | Create New Session |
-
-#### Output Parameters
-None
-
-### 8. `StartMeasurement`
-#### Description
-Starts the DMM for measurements. This function prepares the instrument to begin taking measurements based on the current configuration.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
+|:--:|:----------|:----:|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 9. `ReadMultipleMeasurements`
+### 3. `SetAutoRange`
 #### Description
-Reads multiple measurements equal to the entered sample count in DMM.
+Sets auto range settings for the selected type in specified channel(s) of the Electronic Load.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
+| 4 | auto_range | Boolean | true, false | false |
+
+#### Output Parameters
+None
+
+### 4. `SetManualRange`
+#### Description
+Sets the manual range for the selected type in specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
+| 4 | manual_range | Double | - | - |
+
+#### Output Parameters
+None
+
+### 5. `SetOperationMode`
+#### Description
+Sets the operation mode of the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | operation_mode | Enum | Constant Current(CC), Constant Voltage(CV),  Constant Power (CP), Constant Resistance (CR) | Constant Current (CC) |
+
+#### Output Parameters
+None
+
+### 6. `SetOverCurrentProtection`
+#### Description
+Sets Over Current Protection (OCP) limit and mode for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | ocp_limit | Double | - | 33 A |
+| 4 | ocp_mode | Enum | Limit, Trip | Limit |
+
+#### Output Parameters
+None
+
+### 7. `SetOverPowerProtection`
+#### Description
+Sets Over Power Protection (OPP) limit and mode for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | opp_limit | Double | - | 165 W |
+| 4 | opp_mode | Enum | Limit, Trip | Limit |
+
+#### Output Parameters
+None
+
+### 8. `SetRange`
+#### Description
+Sets the range for the selected type in specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | range | Enum | Low, Medium, High | Low |
+| 4 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
+
+#### Output Parameters
+None
+
+### 9. `SetResponseSpeed`
+#### Description
+Sets the response speed for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | response_speed | Enum | Normal Response Speed, 1/2 the Normal Response Speed, 1/5 Normal Response Speed, 1/10 Normal Response Speed, Fast Response Speed | Normal Response Speed |
+
+#### Output Parameters
+None
+
+### 10. `SetSlewRate`
+#### Description
+Sets the current slew rate in amps per microseconds for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | slew_rate | Double | - | 2.4 A/µs |
+
+#### Output Parameters
+None
+
+### 11. `SetSoftStartDuration`
+#### Description
+Sets the Soft Start Duration (applicable only for Constant Current Mode) for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | soft_start_duration | Double | - | - |
+
+#### Output Parameters
+None
+
+### 12. `SetSwitchingFunction`
+#### Description
+Sets the switching properties for the specified channel(s) of the Electronic Load. Switching properties are used to execute two load settings repetitively. This is applicable only for CC and CR Modes.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | enable_switching | Boolean | true, false | false |
+| 4 | duty_cycle | Double | - | 5% |
+| 5 | pulse_frequency | Double | - | 1 Hz |
+| 6 | switching_level | Double | - | - |
+
+#### Output Parameters
+None
+
+### 13. `SetTiming`
+#### Description
+Sets the Cutoff Time for the specified channel(s) of the Electronic Load. Cutoff Time is the auto load off time which turns off the load after the specified time elapses.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | cutoff_time | I32 | - | - |
+
+#### Output Parameters
+None
+
+### 14. `SetUnderVoltageProtection`
+#### Description
+Turns ON/OFF Under Voltage Protection (UVP) and sets its limit for the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | uvp_limit | Double | - | - |
+| 4 | enable_uvp | Boolean | true, false | false |
+
+#### Output Parameters
+None
+
+### 15. `SetValue`
+#### Description
+Sets the value for the selected type in specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | value | Double | - | - |
+| 4 | value_type | Enum | Current, Voltage, Power, Conductance | Current |
+
+#### Output Parameters
+None
+
+### 16. `ToggleLoad`
+#### Description
+Enables/disables load from the specified channel(s) of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | enable_load | Boolean | true, false | false |
+
+#### Output Parameters
+None
+
+### 17. `Init`
+#### Description
+Initializes the session of the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 10. `ReadSingleMeasurement`
+### 18. `MeasureValues`
 #### Description
-Reads a single measurement equal to the entered sample count in DMM.
+Measures the current, voltage, power, and elapsed time values from the specified channel.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+| S.No | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | current | Double |
+| 2 | voltage | Double |
+| 3 | power | Double |
+| 4 | elapsed_time | Double |
+
+### 19. `Reset`
+#### Description
+Resets the Electronic Load.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
-
-### 11. `RestoreDefaults`
-#### Description
-Restores the DMM to its default settings. This function returns the instrument to a known state.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-
-#### Output Parameters
-None
-
 
 
