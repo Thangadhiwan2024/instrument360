@@ -1,819 +1,583 @@
-# Oscilloscope
+# Source Measure Unit (SMU)
 
-An **Oscilloscope** is an essential electronic test instrument used to observe and analyze varying signal voltages over time. It plays a vital role in **semiconductor testing**, **circuit debugging**, and **signal integrity analysis**.
+A **Source Measure Unit (SMU)** is a highly accurate instrument that combines **sourcing** and **measuring** capabilities into one device. It is widely used for testing semiconductors, characterizing components, and analyzing materials.
 
 ---
 
 ## **Key Features**
 
-### **High Bandwidth and Sampling Rate**
-- Captures high-speed signals accurately.
-- Supports a wide range of frequencies from kHz to several GHz.
+### **Precision Sourcing**
+- Provides accurate voltage or current to the **Device Under Test (DUT)**.
+- Ensures stability and minimal noise during sourcing.
 
-### **Real-Time Waveform Display**
-- Provides visual representation of signal behavior in real time.
-- Displays voltage vs. time for easy analysis of signal properties.
-
-### **Advanced Triggering and Measurement**
-- Enables precise signal capture with multiple trigger modes.
-- Offers automatic measurements like rise time, frequency, and RMS voltage.
+### **Four-Quadrant Operation**
+- **Quadrant I:** Sourcing voltage and sourcing current.
+- **Quadrant II:** Sourcing voltage and sinking current.
+- **Quadrant III:** Sinking voltage and sinking current.
+- **Quadrant IV:** Sinking voltage and sourcing current.
 
 ---
 
 ## **Applications**
+### **Semiconductor Testing**
+- Evaluates I-V characteristics of transistors, diodes, and other semiconductor devices.
+- Measures leakage current and threshold voltage with high precision.
 
-### **Semiconductor Validation**
-- Analyzes digital and analog signals in ICs and SoCs.
-- Validates timing, noise margins, and voltage levels.
+### **Component Characterization**
+- Analyzes passive and active components, such as resistors, capacitors, and inductors.
+- Validates component performance under various operating conditions.
 
-### **Circuit Debugging**
-- Identifies faults in analog and digital circuits.
-- Troubleshoots issues such as glitches, timing errors, and signal dropouts.
-
-### **Signal Integrity Analysis**
-- Assesses signal quality in high-speed communication systems.
-- Detects signal distortions, jitter, and reflections.
+### **Material Analysis**
+- Assesses electrical properties of materials by measuring resistivity and conductivity.
+- Conducts leakage and breakdown voltage tests.
 
 ---
 
 ## **Advantages**
+### **High Accuracy and Stability**
+- Ensures precise control over source and measurement parameters.
+- Minimizes errors and noise for sensitive applications.
 
-### **Accurate Visualization of Signals**
-- Helps in understanding circuit behavior with detailed waveform analysis.
-- Enables engineers to detect even subtle anomalies in signal behavior.
+### **Simplified Test Setup**
+- Combines source and measurement functions into one instrument.
+- Reduces complexity and improves test efficiency.
 
-### **Versatile Measurement Capabilities**
-- Suitable for a wide range of electronic applications.
-- Measures both periodic and non-periodic waveforms.
-
-### **Data Storage and Connectivity**
-- Supports waveform storage for offline analysis.
-- Offers USB, LAN, or Wi-Fi connectivity for remote access and automation.
+### **Automation and Integration**
+- Supports integration with automated test systems.
+- Enables consistent and efficient test execution.
 
 ---
 
 ## **Abstract Methods**
+---
 
-### 1. `StopAcquisition`
+### 1. `Abort`
 #### Description
-Halts any ongoing signal acquisition and transitions the oscilloscope to an idle state.
+Terminates the session for the SMU by halting any ongoing operations and resetting the session to a safe state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 2. `AutoConfigure`
+### 2. `Close`
 #### Description
-Automatically adjusts the oscilloscope's settings based on the detected input signal.
+Ends the session for the SMU by releasing the communication channel and freeing resources.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 3. `SaveScreenCapture`
+### 3. `ConnectDisconnectOutput`
 #### Description
-Takes a snapshot of the oscilloscope's display and saves it as an image in the specified format and location.
+Connects or disconnects the output of the specified SMU channel.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | File Path | File Path | - | - |
-| 4 | File Name | String | - | - |
-| 5 | File Format | Enum | PNG, BMP, JPG, TIFF | - |
-| 6 | Replace Existing File | Boolean | True, False | FALSE |
+| 2 | channel | String | - | - |
+| 3 | state | enum | Connect, Disconnect | Disconnect |
 
 #### Output Parameters
 None
 
-### 4. `EndSession`
+### 4. `SetOverCurrentProtection`
 #### Description
-Ends the current acquisition session and resets the oscilloscope to an idle state.
+Configures over-current protection (OCP) for the specified channel by enabling or disabling protection and setting the maximum allowable current limit.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | enable_ocp | bool | True, False | True |
+| 4 | over_current_protection | float | - | 0.1A |
 
 #### Output Parameters
 None
 
-### 5. `SetAcquisitionType`
+### 5. `SetOverVoltageProtection`
 #### Description
-Defines the acquisition type and, if applicable, sets the averaging count for the oscilloscope.
+Configures over-voltage protection (OVP) for the specified channel by enabling or disabling protection and setting the maximum allowable voltage limit.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Acquisition Type | Enum | Sample, Peak Detect, Envelope, Average | Sample |
-| 4 | Average Count | Integer | - | 16 |
+| 2 | channel | String | - | - |
+| 3 | enable_ovp | bool | True, False | True |
+| 4 | over_voltage_protection | float | - | 10V |
 
 #### Output Parameters
 None
 
-### 6. `SetBandwidthLimit`
+### 6. `SetPulseSourceMode`
 #### Description
-Adjusts the bandwidth limit for the specified channel(s) on the oscilloscope.
+Configures the pulse source mode for the specified channel to control how pulses are generated.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Bandwidth | Double | - | 20MHz |
+| 2 | channel | String | - | - |
+| 3 | pulse_mode | enum | Pulse Voltage, Pulse Current | Pulse Voltage |
 
 #### Output Parameters
 None
 
-### 7. `SetInputImpedance`
+### 7. `SetPulseTimings`
 #### Description
-Sets the input impedance for the specified channel(s) on the oscilloscope.
+Configures the pulse period and pulse width for the specified channel to define the timing of pulse generation.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Channel Impedance | Enum | - | 1M Ohms |
+| 2 | channel | String | - | - |
+| 3 | pulse_period | float | - | 50ms |
+| 4 | pulse_width | float | - | 25ms |
 
 #### Output Parameters
 None
 
-### 8. `SetChannelLabel`
+### 8. `SetSenseMode`
 #### Description
-Assigns a custom label to the waveform displayed for the specified channel(s).
+Configures the sense mode for the specified channel to measure voltage or current either at the source (local) or at the load (remote).
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Label Name | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | sense | enum | Local, Remote | Local |
 
 #### Output Parameters
 None
 
-### 9. `SetLabelPosition`
+### 9. `SetSourceMode`
 #### Description
-Positions the label for the specified channel(s) on the oscilloscope display.
+Configures the source mode for the specified channel to either control voltage or current.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Horizontal Position | Double | - | - |
-| 4 | Vertical Position | Double | - | - |
+| 2 | channel | String | - | - |
+| 3 | dc_source_mode | enum | Voltage, Current | Voltage |
 
 #### Output Parameters
 None
 
-### 10. `SetContinuousMode`
+### 10. `SetSourceDelay`
 #### Description
-Configures the oscilloscope to operate in continuous acquisition mode or stop after a single acquisition.
+Sets the source delay time for the specified channel to introduce a delay before enabling the output.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Enable Continuous Acquisition | Boolean | True, False | TRUE |
+| 2 | channel | String | - | - |
+| 3 | enable_source_delay | bool | True, False | False |
+| 4 | source_delay | float | - | 0.1 |
 
 #### Output Parameters
 None
 
-### 11. `SetCursorFunctionality`
+### 11. `ToggleOutputState`
 #### Description
-Enables or disables cursor functionality and sets the cursor type for the specified channel(s).
+Enables or disables the output for the specified channel to control power delivery.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Cursor State | Boolean | True, False | FALSE |
-| 4 | Cursor Function | Enum | - | - |
+| 2 | channel | String | - | - |
+| 3 | state | bool | True, False | True |
 
 #### Output Parameters
 None
 
-### 12. `SetCursorTracking`
+### 12. `Init`
 #### Description
-Defines the cursor tracking mode for the oscilloscope.
+Initializes the session for the SMU by establishing communication and preparing the device for further commands.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Cursor Mode | Enum | Independent, Track | - |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 13. `SetCursorParameters`
+### 13. `Initiate`
 #### Description
-Adjusts the positions and units for horizontal and vertical cursors.
+Initiates the session for the specified channel, preparing it to begin operations such as measurements or output delivery.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | HBar Position 1 | Double | - | - |
-| 4 | HBar Position 2 | Double | - | - |
-| 5 | VBar Position 1 | Double | - | - |
-| 6 | VBar Position 2 | Double | - | - |
-| 7 | HBar Unit | Enum | Percent, Seconds, Hertz, Degrees | Percent |
-| 8 | VBar Unit | Enum | Base, Percent, Seconds, Hertz, Degrees, Ampere, Voltage, Watt | Base |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 14. `SetCursorSource`
+### 14. `GetCurrentMeasurement`
 #### Description
-Specifies the source for the cursor functionality based on the selected mode.
+Measures and returns the current for the specified channel. This function retrieves the instantaneous current flowing through the circuit or device connected to the SMU (Source Measure Unit).
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Cursor Source Mode | Enum | Same, Split | Same |
-| 4 | Cursor 1 Source | String | - | - |
-| 5 | Cursor 2 Source | String | - | - |
-
-#### Output Parameters
-None
-
-### 15. `SetDelayMeasurement`
-#### Description
-Configures parameters for measuring delay between waveforms.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Search Direction | Enum | Forwards | - |
-| 4 | Source Waveform Slope | Enum | Rising, Falling | Rising |
-| 5 | Destination Waveform Slope | Enum | Rising, Falling | Rising |
-
-#### Output Parameters
-None
-
-### 16. `SetEdgeTrigger`
-#### Description
-Configures the oscilloscope to trigger on a signal edge and sets the trigger parameters.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Trigger Level in V | Double | - | 1.000000 |
-| 4 | Trigger Slope | Enum | Rising, Falling | Rising |
-
-#### Output Parameters
-None
-
-### 17. `SetWaveformPoints`
-#### Description
-Defines the start and end points for waveform data acquisition.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Start Point | Integer | - | 1 |
-| 4 | End Point | Integer | - | 2500 |
-
-#### Output Parameters
-None
-
-### 18. `SetHorizontalPosition`
-#### Description
-Adjusts the horizontal position of the waveform on the oscilloscope display.
-
-**Note:** This method depends on the time delay state of the instrument. Call **SetTimeDelay** API first to disable the time delay state.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Position | Double | - | - |
-| 4 | Unit | Enum | Percentage, Seconds | Percentage |
-
-#### Output Parameters
-None
-
-### 19. `ToggleMeasurementDisplay`
-#### Description
-Enables or disables the display of measurement parameters on the oscilloscope's front panel.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Enable Display? | Boolean | True, False | TRUE |
-| 4 | Measurement Parameter | String | - | - |
-
-#### Output Parameters
-None
-
-### 20. `SetMeasurementParameter`
-#### Description
-Configures the measurement parameter or variable for the oscilloscope.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Measurement Function | Enum | - | - |
-| 4 | Measurement Parameter | String | - | - |
-| 5 | Destination Channel | Integer | - | - |
-
-#### Output Parameters
-None
-
-### 21. `ToggleMeasurementStatistics`
-#### Description
-Enables or disables the statistics mode for measurements.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Enable Measurement Statistics? | Boolean | True, False | TRUE |
-
-#### Output Parameters
-None
-
-### 22. `SetProbeScaling`
-#### Description
-Adjusts the probe attenuation factor for the specified channel(s).
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Probe Attenuation | Double | - | 1.000000 |
-
-#### Output Parameters
-None
-
-### 23. `SetRecordLength`
-#### Description
-Specifies the number of data points to record during waveform acquisition.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Record Length | Double | - | 10000 |
-
-#### Output Parameters
-None
-
-### 24. `SetReferenceCalculation`
-#### Description
-Defines the method for calculating reference levels.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Ref Level Calc Method | Enum | Auto Select, Histogram, Min/Max | Auto Select |
-
-#### Output Parameters
-None
-
-### 25. `SetReferenceLevels`
-#### Description
-Configures reference levels for waveform measurements, including high, low, and mid-levels.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | High Ref | Double | - | 9 |
-| 4 | Low Ref | Double | - | 1 |
-| 5 | Mid Ref | Double | - | 5 |
-| 6 | Second Source Mid Ref | Double | - | 5 |
-| 7 | Units | Enum | Percentage, Volts | Percentage |
-
-#### Output Parameters
-None
-
-### 26. `SetSamplingRate`
-#### Description
-Specifies the number of samples to capture per second during acquisition.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Sample Rate | Double | - | - |
-
-#### Output Parameters
-None
-
-### 27. `SetSamplingMode`
-#### Description
-Defines the sampling mode (real-time or equivalent time) for the oscilloscope.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Sampling Mode | Enum | Real Time, Equivalent Time | Real Time |
-
-#### Output Parameters
-None
-
-### 28. `SetTimeDelay`
-#### Description
-Adjusts the horizontal delay for waveform display relative to the trigger event.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Enable Delay | Boolean | True, False | TRUE |
-| 4 | Time Delay in s | Double | - | - |
-
-#### Output Parameters
-None
-
-### 29. `SetTimeScale`
-#### Description
-Configures the horizontal time scale for the oscilloscope.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Timebase in s | Double | - | - |
-
-#### Output Parameters
-None
-
-### 30. `SetTriggerCoupling`
-#### Description
-Defines how the oscilloscope couples the trigger source.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Trigger Coupling | Enum | DC, AC, HF Reject, LF Reject, Noise Reject | DC |
-
-#### Output Parameters
-None
-
-### 31. `SetTriggerMode`
-#### Description
-Configures the trigger mode for the specified channel.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Trigger Mode | Enum | Auto, Normal | Auto |
-
-#### Output Parameters
-None
-
-### 32. `SetInputCoupling`
-#### Description
-Specifies how the oscilloscope couples the input signal.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Coupling | Enum | AC, DC, Ground | DC |
-
-#### Output Parameters
-None
-
-### 33. `SetVerticalOffset`
-#### Description
-Adjusts the vertical offset for the input signal.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Offset | Double | - | - |
-
-#### Output Parameters
-None
-
-### 34. `SetVerticalPosition`
-#### Description
-Sets the vertical position of the input signal on the oscilloscope display.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Position | Double | - | - |
-
-#### Output Parameters
-None
-
-### 35. `SetVerticalRange`
-#### Description
-Defines the vertical range for the input signal.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Range | Double | - | - |
-
-#### Output Parameters
-None
-
-### 36. `SetVerticalScale`
-#### Description
-Adjusts the vertical scale for the input signal.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Scale | Double | - | - |
-
-#### Output Parameters
-None
-
-### 37. `ToggleChannelDisplay`
-#### Description
-Enables or disables the display of the specified channel(s) on the oscilloscope.
-
-**Note:** To configure for multiple Channels, enter the Channels as comma-separated inputs.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Enable Channel? | Boolean | True, False | TRUE |
-
-#### Output Parameters
-None
-
-### 38. `RetrieveData`
-#### Description
-**DEPRECATED**
-This method is deprecated. Use the 'Fetch.vi' function instead for enhanced functionality.
-
-Reason for deprecating: Added 'Initiate before Fetch?' & 'Timeout' inputs.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 | S.No | Parameter | Type |
 |:--:|:----------|:-----|
-| 1 | Waveforms | Array |
+| 1 | current | array |
 
-### 39. `FetchWaveform`
+### 15. `GetVoltageMeasurement`
 #### Description
-Retrieves waveform data from the specified channel(s).
+Measures and returns the voltage for the specified channel. This function captures the voltage across the connected circuit or device with high precision.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Initiate before Fetch? | Boolean | True, False | TRUE |
-| 4 | Timeout in ms | Double | - | 1000 |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 | S.No | Parameter | Type |
 |:--:|:----------|:-----|
-| 1 | Waveforms | Array |
+| 1 | voltage | array |
 
-### 40. `GetCursorReadings`
+### 16. `Reset`
 #### Description
-Reads the horizontal and vertical cursor values, along with their deltas.
+Resets the instrument settings to the factory or default state. It terminates any ongoing operations and restores the initial configurations, ensuring a clean state before performing subsequent tasks.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | HBar Value 1 | Double |
-| 2 | HBar Value 2 | Double |
-| 3 | VBar Value 1 | Double |
-| 4 | VBar Value 2 | Double |
-| 5 | HBar Delta | Double |
-| 6 | VBar Delta | Double |
-
-### 41. `RetrieveMetadata`
-#### Description
-Fetches metadata such as manufacturer, model, serial number, and firmware version.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Manufacturer | String |
-| 2 | Model | String |
-| 3 | Serial Number | String |
-| 4 | Firmware Version | String |
-
-### 42. `GetRecordLengthInfo`
-#### Description
-Retrieves the horizontal record length in samples.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Record Length | Double |
-
-### 43. `Init`
-#### Description
-Starts a new session or retrieves an existing session for the oscilloscope.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Port | Any | - | - |
-| 4 | Type | String | - | - |
-| 5 | Operation | Enum | Create New Session, Fetch Existing Session | Create New Session |
+| 2 | channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 44. `Initiate`
+### 17. `SetCurrentParameters`
 #### Description
-Initiates the session for the specified Channel, preparing it to begin operations such as measurements or output delivery.
+Configures the current level and voltage limit for the specified channel. It defines the target current and associated safety limits to protect the circuit while sourcing current.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | current_level | float | - | 0.1A |
+| 4 | voltage_limit | float | - | 2V |
+| 5 | current_level_range | float | - | 0.1A |
+| 6 | voltage_limit_range | float | - | 6V |
+| 7 | source_delay | float | - | 0.1 |
 
 #### Output Parameters
 None
 
-### 45. `ReadMeasurement`
+### 18. `SetCurrentLimit`
 #### Description
-Reads the result of a configured measurement parameter.
+Sets the maximum allowable current for the specified channel. This function establishes a protection limit, preventing the channel from sourcing excessive current that could damage the connected device.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Measurement Parameter | String | - | - |
-| 4 | Timeout in ms | Double | - | 1000 |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Measured Value | Double |
-
-### 46. `GetWaveformMeasurement`
-#### Description
-Obtains waveform measurements for the specified channel(s) based on the selected function.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Measurement Function | Enum | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Measurement Values | Array |
-
-### 47. `GetDualChannelMeasurement`
-#### Description
-Fetches waveform measurements requiring two channels, such as delay or phase.
-
-**Available Dual Channel Measurement Functions:**
-- Delay
-- Phase
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Measurement Function | Enum | Delay, Phase | Delay |
-| 4 | Destination Channel | Integer | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Measurement Values | Array |
-
-### 48. `RecallSetup`
-#### Description
-Recalls the configurations of the oscilloscope from the settings stored in the memory location or in the setup file.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | File Path | Path | - | - |
-| 4 | Recall Setup | Enum | - | - |
-| 5 | Memory Location | Integer | - | - |
+| 2 | channel | String | - | - |
+| 3 | current_limit | float | - | 0.1A |
 
 #### Output Parameters
 None
 
-### 49. `RestoreDefaults`
+### 19. `SetCurrentLimitRange`
 #### Description
-Resets the oscilloscope to its factory default settings.
+Defines the permissible range for the current limit and optionally enables auto-ranging for dynamic range adjustment based on load requirements.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | current_limit_range | float | - | 0.1A |
+| 4 | auto_range | bool | True, False | False |
 
 #### Output Parameters
 None
 
-### 50. `SaveCurrentSetup`
+### 20. `SetCurrentLevel`
 #### Description
-Saves the oscilloscope's current settings to a file or memory location.
+Configures the desired current level for the specified channel. This function precisely sets the current that the channel will source to the connected device.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Folder Path | File Path | - | - |
-| 4 | File Name | String | - | Test |
-| 5 | Save Setup | Enum | - | - |
-| 6 | Memory Location | Integer | - | - |
-| 7 | Replace Existing File? | Boolean | True, False | FALSE |
+| 2 | channel | String | - | - |
+| 3 | current_level | float | - | 0.1A |
 
 #### Output Parameters
 None
 
+### 21. `SetCurrentRange`
+#### Description
+Sets the permissible range for the current level and optionally enables auto-ranging to adjust the range dynamically.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | current_level_range | float | - | 0.1A |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 22. `SetVoltageLimit`
+#### Description
+Sets the maximum allowable voltage for the specified channel, ensuring that the applied voltage does not exceed a safe threshold.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | voltage_limit | float | - | 2V |
+
+#### Output Parameters
+None
+
+### 23. `SetVoltageLimitRange`
+#### Description
+Defines the permissible range for the voltage limit and enables auto-ranging for automatic adjustment of the range.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | voltage_limit_range | float | - | 6V |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 24. `SetVoltageLevel`
+#### Description
+Configures the desired voltage level for the specified channel. This function ensures accurate voltage sourcing to the connected circuit.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | voltage_level | float | - | 2V |
+
+#### Output Parameters
+None
+
+### 25. `SetVoltageRange`
+#### Description
+Sets the voltage range with optional auto-ranging to dynamically adjust the range depending on load requirements.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | voltage_level_range | float | - | 6V |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 26. `SetPulseBaseCurrentLimit`
+#### Description
+Configures the limit for the pulse base current to ensure safe operation during pulse generation.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_limit | float | - | 10mA |
+
+#### Output Parameters
+None
+
+### 27. `SetPulseBaseCurrentLevel`
+#### Description
+Sets the desired pulse base current level for the specified channel, ensuring that pulse operations are performed with the correct parameters.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_level | float | - | 0.1A |
+
+#### Output Parameters
+None
+
+### 28. `SetPulseBaseVoltageLimit`
+#### Description
+Configures the maximum allowable voltage limit for the pulse base operation, preventing excessive voltage from being applied.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_limit | float | - | 0.1V |
+
+#### Output Parameters
+None
+
+### 29. `SetPulseBaseVoltageLevel`
+#### Description
+Sets the desired pulse base voltage level for the specified channel, ensuring that the pulse voltage meets operational requirements.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_level | float | - | 0.2V |
+
+#### Output Parameters
+None
+
+### 30. `SetPulseCurrentLimit`
+#### Description
+Sets the pulse current limit for the specified channel to ensure the current does not exceed the defined threshold during pulse operations. This protects the device under test (DUT) from excessive current that could cause damage.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_limit | float | - | 0.1A |
+
+#### Output Parameters
+None
+
+### 31. `SetPulseCurrentLimitRange`
+#### Description
+Sets the pulse current limit range for the specified channel, allowing flexibility in defining the allowable range for pulse current limits. When auto-range is enabled, the system dynamically adjusts the range for optimal performance.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_limit_range | float | - | 0.1A |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 32. `SetPulseCurrentLevel`
+#### Description
+Sets the pulse current level for the specified channel, determining the desired magnitude of pulse current that should be applied to the DUT during operations.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_level | float | - | 0.1A |
+
+#### Output Parameters
+None
+
+### 33. `SetPulseCurrentLevelRange`
+#### Description
+Sets the pulse current level range for the specified channel to define the allowable range within which the pulse current level can be set. When auto-range is enabled, the system adjusts the range based on varying conditions.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_current_level_range | float | - | - |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 34. `SetPulseVoltageLimit`
+#### Description
+Sets the pulse voltage limit for the specified channel, ensuring that the voltage applied during pulse operations does not exceed the defined threshold, protecting the DUT from excessive voltage.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_limit | float | - | 3V |
+
+#### Output Parameters
+None
+
+### 35. `SetPulseVoltageLimitRange`
+#### Description
+Sets the pulse voltage limit range for the specified channel, allowing the definition of a permissible range for pulse voltage limits. When auto-range is enabled, the system dynamically adapts the range for optimal voltage control.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_limit_range | float | - | 3V |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
+
+### 36. `SetPulseVoltageLevel`
+#### Description
+Sets the pulse voltage level for the specified channel, specifying the desired voltage to be applied during pulse operations. This value determines the voltage intensity delivered to the DUT.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_level | float | - | 1V |
+
+#### Output Parameters
+None
+
+### 37. `SetPulseVoltageLevelRange`
+#### Description
+Sets the pulse voltage level range for the specified channel, defining the acceptable range within which the pulse voltage level can be set. When auto-range is enabled, the system dynamically adjusts the range based on varying conditions.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | channel | String | - | - |
+| 3 | pulse_voltage_level_range | float | - | 3V |
+| 4 | auto_range | bool | True, False | False |
+
+#### Output Parameters
+None
