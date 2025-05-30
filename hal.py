@@ -1,254 +1,172 @@
-from enum import Enum
-from typing import List, Optional, Any
-
-class FileFormat(Enum):
-    PNG = "PNG"
-    BMP = "BMP"
-    JPG = "JPG"
-    TIFF = "TIFF"
-
-class AcquisitionType(Enum):
-    Sample = "Sample"
-    PeakDetect = "Peak Detect"
-    Envelope = "Envelope"
-    Average = "Average"
-
-class CursorMode(Enum):
-    Independent = "Independent"
-    Track = "Track"
-
-class SearchDirection(Enum):
-    Forwards = "Forwards"
-
-class WaveformSlope(Enum):
-    Rising = "Rising"
-    Falling = "Falling"
-
-class TriggerSlope(Enum):
-    Rising = "Rising"
-    Falling = "Falling"
-
-class RefLevelCalcMethod(Enum):
-    AutoSelect = "Auto Select"
-    Histogram = "Histogram"
-    MinMax = "Min/Max"
-
-class SamplingMode(Enum):
-    RealTime = "Real Time"
-    EquivalentTime = "Equivalent Time"
-
-class TriggerCoupling(Enum):
-    DC = "DC"
-    AC = "AC"
-    HFReject = "HF Reject"
-    LFReject = "LF Reject"
-    NoiseReject = "Noise Reject"
-
-class TriggerMode(Enum):
-    Auto = "Auto"
-    Normal = "Normal"
-
-class VerticalCoupling(Enum):
-    AC = "AC"
-    DC = "DC"
-    Ground = "Ground"
-
-class Oscilloscope:
-    def __init__(self, instrument_address: str):
-        self.instrument_address = instrument_address
-
-    def StopAcquisition(self, Channel: str):
-        """Halts any ongoing signal acquisition."""
-        pass
-
-    def AutoConfigure(self, Channel: str):
-        """Automatically adjusts the oscilloscope's settings."""
-        pass
-
-    def SaveScreenCapture(self, Channel: str, File_Path: str, File_Name: str, File_Format: FileFormat, Replace_Existing_File: bool = False):
-        """Takes a snapshot of the oscilloscope's display."""
-        pass
-
-    def EndSession(self, Channel: str):
-        """Ends the current acquisition session."""
-        pass
-
-    def SetAcquisitionType(self, Channel: str, Acquisition_Type: AcquisitionType, Average_Count: int = 16):
-        """Defines the acquisition type."""
-        pass
-
-    def SetBandwidthLimit(self, Channel: str, Bandwidth: float = 20.0):
-        """Adjusts the bandwidth limit."""
-        pass
-
-    def SetInputImpedance(self, Channel: str, Channel_Impedance: str = "1M Ohms"):
-        """Sets the input impedance."""
-        pass
-
-    def SetChannelLabel(self, Channel: str, Label_Name: str):
-        """Assigns a custom label to the waveform."""
-        pass
-
-    def SetLabelPosition(self, Channel: str, Horizontal_Position: float, Vertical_Position: float):
-        """Positions the label on the oscilloscope display."""
-        pass
-
-    def SetContinuousMode(self, Channel: str, Enable_Continuous_Acquisition: bool = True):
-        """Configures continuous acquisition mode."""
-        pass
-
-    def SetCursorFunctionality(self, Channel: str, Cursor_State: bool = False, Cursor_Function: str = ""):
-        """Enables or disables cursor functionality."""
-        pass
-
-    def SetCursorTracking(self, Channel: str, Cursor_Mode: CursorMode):
-        """Defines the cursor tracking mode."""
-        pass
-
-    def SetCursorParameters(self, Channel: str, HBar_Position_1: float, HBar_Position_2: float, VBar_Position_1: float, VBar_Position_2: float, HBar_Unit: str = "Percent", VBar_Unit: str = "Base"):
-        """Adjusts the positions and units for cursors."""
-        pass
-
-    def SetCursorSource(self, Channel: str, Cursor_Source_Mode: str = "Same", Cursor_1_Source: str = "", Cursor_2_Source: str = ""):
-        """Specifies the source for cursor functionality."""
-        pass
-
-    def SetDelayMeasurement(self, Channel: str, Search_Direction: SearchDirection = SearchDirection.Forwards, Source_Waveform_Slope: WaveformSlope = WaveformSlope.Rising, Destination_Waveform_Slope: WaveformSlope = WaveformSlope.Rising):
-        """Configures parameters for delay measurement."""
-        pass
-
-    def SetEdgeTrigger(self, Channel: str, Trigger_Level_in_V: float = 1.0, Trigger_Slope: TriggerSlope = TriggerSlope.Rising):
-        """Configures the oscilloscope to trigger on a signal edge."""
-        pass
-
-    def SetWaveformPoints(self, Channel: str, Start_Point: int = 1, End_Point: int = 2500):
-        """Defines the start and end points for waveform data acquisition."""
-        pass
-
-    def SetHorizontalPosition(self, Channel: str, Position: float, Unit: str = "Percentage"):
-        """Adjusts the horizontal position of the waveform."""
-        pass
-
-    def ToggleMeasurementDisplay(self, Channel: str, Enable_Display: bool = True, Measurement_Parameter: str = ""):
-        """Enables or disables the display of measurement parameters."""
-        pass
-
-    def SetMeasurementParameter(self, Channel: str, Measurement_Function: str = "", Measurement_Parameter: str = "", Destination_Channel: int = -1):
-        """Configures the measurement parameter or variable."""
-        pass
-
-    def ToggleMeasurementStatistics(self, Channel: str, Enable_Measurement_Statistics: bool = True):
-        """Enables or disables the statistics mode for measurements."""
-        pass
-
-    def SetProbeScaling(self, Channel: str, Probe_Attenuation: float = 1.0):
-        """Adjusts the probe attenuation factor."""
-        pass
-
-    def SetRecordLength(self, Channel: str, Record_Length: float = 10000):
-        """Specifies the number of data points to record."""
-        pass
-
-    def SetReferenceCalculation(self, Channel: str, Ref_Level_Calc_Method: RefLevelCalcMethod = RefLevelCalcMethod.AutoSelect):
-        """Defines the method for calculating reference levels."""
-        pass
-
-    def SetReferenceLevels(self, Channel: str, High_Ref: float = 9, Low_Ref: float = 1, Mid_Ref: float = 5, Second_Source_Mid_Ref: float = 5, Units: str = "Percentage"):
-        """Configures reference levels for waveform measurements."""
-        pass
-
-    def SetSamplingRate(self, Channel: str, Sample_Rate: float = -1):
-        """Specifies the number of samples to capture per second."""
-        pass
-
-    def SetSamplingMode(self, Channel: str, Sampling_Mode: SamplingMode = SamplingMode.RealTime):
-        """Defines the sampling mode."""
-        pass
-
-    def SetTimeDelay(self, Channel: str, Enable_Delay: bool = True, Time_Delay_in_s: float = -1):
-        """Adjusts the horizontal delay for waveform display."""
-        pass
-
-    def SetTimeScale(self, Channel: str, Timebase_in_s: float = -1):
-        """Configures the horizontal time scale."""
-        pass
-
-    def SetTriggerCoupling(self, Channel: str, Trigger_Coupling: TriggerCoupling = TriggerCoupling.DC):
-        """Defines how the oscilloscope couples the trigger source."""
-        pass
-
-    def SetTriggerMode(self, Channel: str, Trigger_Mode: TriggerMode = TriggerMode.Auto):
-        """Configures the trigger mode."""
-        pass
-
-    def SetInputCoupling(self, Channel: str, Vertical_Coupling: VerticalCoupling = VerticalCoupling.DC):
-        """Specifies how the oscilloscope couples the input signal."""
-        pass
-
-    def SetVerticalOffset(self, Channel: str, Vertical_Offset: float = -1):
-        """Adjusts the vertical offset for the input signal."""
-        pass
-
-    def SetVerticalPosition(self, Channel: str, Vertical_Position: float = -1):
-        """Sets the vertical position of the input signal."""
-        pass
-
-    def SetVerticalRange(self, Channel: str, Vertical_Range: float = -1):
-        """Defines the vertical range for the input signal."""
-        pass
-
-    def SetVerticalScale(self, Channel: str, Vertical_Scale: float = -1):
-        """Adjusts the vertical scale for the input signal."""
-        pass
-
-    def ToggleChannelDisplay(self, Channel: str, Enable_Channel: bool = True):
-        """Enables or disables the display of the specified channel(s)."""
-        pass
-
-    def FetchWaveform(self, Channel: str, Initiate_before_Fetch: bool = True, Timeout_in_ms: float = 1000):
-        """Retrieves waveform data from the specified channel(s)."""
-        pass
-
-    def GetCursorReadings(self, Channel: str):
-        """Reads the horizontal and vertical cursor values."""
-        pass
-
-    def RetrieveMetadata(self, Channel: str):
-        """Fetches metadata such as manufacturer and model."""
-        pass
-
-    def GetRecordLengthInfo(self, Channel: str):
-        """Retrieves the horizontal record length in samples."""
-        pass
-
-    def Init(self, Channel: str, Port: Any = "", Type: str = "", Operation: str = "Create New Session"):
-        """Starts a new session or retrieves an existing session."""
-        pass
-
-    def Initiate(self, Channel: str):
-        """Initiates the session for specified Channel."""
-        pass
-
-    def ReadMeasurement(self, Channel: str, Measurement_Parameter: str, Timeout_in_ms: float = 1000):
-        """Reads the result of a configured measurement parameter."""
-        pass
-
-    def GetWaveformMeasurement(self, Channel: str, Measurement_Function: str = ""):
-        """Obtains waveform measurements for the specified channel(s)."""
-        pass
-
-    def GetDualChannelMeasurement(self, Channel: str, Measurement_Function: str = "Delay", Destination_Channel: int = -1):
-        """Fetches waveform measurements requiring two channels."""
-        pass
-
-    def RecallSetup(self, Channel: str, File_Path: str = "", Recall_Setup: str = "", Memory_Location: int = -1):
-        """Recalls the configurations from the settings stored."""
-        pass
-
-    def RestoreDefaults(self, Channel: str):
-        """Resets the oscilloscope to its factory default settings."""
-        pass
-
-    def SaveCurrentSetup(self, Channel: str, Folder_Path: str = "", File_Name: str = "Test", Save_Setup: str = "", Memory_Location: int = -1, Replace_Existing_File: bool = False):
-        """Saves the oscilloscope's current settings."""
+from enum import Enum
+from typing import List, Optional, Any
+
+class ConnectionState(str, Enum):
+    Connect = "Connect"
+    Disconnect = "Disconnect"
+
+class PulseSourceMode(str, Enum):
+    Pulse_Voltage = "Pulse Voltage"
+    Pulse_Current = "Pulse Current"
+
+class SenseMode(str, Enum):
+    Local = "Local"
+    Remote = "Remote"
+
+class SourceMode(str, Enum):
+    Voltage = "Voltage"
+    Current = "Current"
+
+class SMU:
+    def __init__(self, instrument_address: str) -> None:
+        """Initializes the SMU with the given instrument address."""
+        self.instrument_address = instrument_address
+        
+
+    def Abort(self, channel: str) -> None:
+        """Terminates the session for the SMU by halting any ongoing operations and resetting the session to a safe state."""
+        pass
+
+    def Close(self, channel: str) -> None:
+        """Ends the session for the SMU by releasing the communication channel and freeing resources."""
+        pass
+
+    def ConnectDisconnectOutput(self, channel: str, state: ConnectionState = ConnectionState.Disconnect) -> None:
+        """Connects or disconnects the output of the specified SMU channel."""
+        pass
+
+    def SetOverCurrentProtection(self, channel: str, enable_ocp: bool = True, over_current_protection: float = 0.1) -> None:
+        """Configures over-current protection (OCP) for the specified channel."""
+        pass
+
+    def SetOverVoltageProtection(self, channel: str, enable_ovp: bool = True, over_voltage_protection: float = 10) -> None:
+        """Configures over-voltage protection (OVP) for the specified channel."""
+        pass
+
+    def SetPulseSourceMode(self, channel: str, pulse_mode: PulseSourceMode = PulseSourceMode.Pulse_Voltage) -> None:
+        """Configures the pulse source mode for the specified channel."""
+        pass
+
+    def SetPulseTimings(self, channel: str, pulse_period: float = 50, pulse_width: float = 25) -> None:
+        """Configures the pulse period and pulse width for the specified channel."""
+        pass
+
+    def SetSenseMode(self, channel: str, sense: SenseMode = SenseMode.Local) -> None:
+        """Configures the sense mode for the specified channel."""
+        pass
+
+    def SetSourceMode(self, channel: str, dc_source_mode: SourceMode = SourceMode.Voltage) -> None:
+        """Configures the source mode for the specified channel."""
+        pass
+
+    def SetSourceDelay(self, channel: str, enable_source_delay: bool = False, source_delay: float = 0.1) -> None:
+        """Sets the source delay time for the specified channel."""
+        pass
+
+    def ToggleOutputState(self, channel: str, state: bool = True) -> None:
+        """Enables or disables the output for the specified channel."""
+        pass
+
+    def Init(self, channel: str) -> None:
+        """Initializes the session for the SMU by establishing communication."""
+        pass
+
+    def Initiate(self, channel: str) -> None:
+        """Initiates the session for the specified channel."""
+        pass
+
+    def GetCurrentMeasurement(self, channel: str) -> List[Any]:
+        """Measures and returns the current for the specified channel."""
+        pass
+
+    def GetVoltageMeasurement(self, channel: str) -> List[Any]:
+        """Measures and returns the voltage for the specified channel."""
+        pass
+
+    def Reset(self, channel: str) -> None:
+        """Resets the instrument settings to the factory or default state."""
+        pass
+
+    def SetCurrentParameters(self, channel: str, current_level: float = 0.1, voltage_limit: float = 2, current_level_range: float = 0.1, voltage_limit_range: float = 6, source_delay: float = 0.1) -> None:
+        """Configures the current level and voltage limit for the specified channel."""
+        pass
+
+    def SetCurrentLimit(self, channel: str, current_limit: float = 0.1) -> None:
+        """Sets the maximum allowable current for the specified channel."""
+        pass
+
+    def SetCurrentLimitRange(self, channel: str, current_limit_range: float = 0.1, auto_range: bool = False) -> None:
+        """Defines the permissible range for the current limit for the specified channel."""
+        pass
+
+    def SetCurrentLevel(self, channel: str, current_level: float = 0.1) -> None:
+        """Configures the desired current level for the specified channel."""
+        pass
+
+    def SetCurrentRange(self, channel: str, current_level_range: float = 0.1, auto_range: bool = False) -> None:
+        """Sets the permissible range for the current level for the specified channel."""
+        pass
+
+    def SetVoltageLimit(self, channel: str, voltage_limit: float = 2) -> None:
+        """Sets the maximum allowable voltage for the specified channel."""
+        pass
+
+    def SetVoltageLimitRange(self, channel: str, voltage_limit_range: float = 6, auto_range: bool = False) -> None:
+        """Defines the permissible range for the voltage limit for the specified channel."""
+        pass
+
+    def SetVoltageLevel(self, channel: str, voltage_level: float = 2) -> None:
+        """Configures the desired voltage level for the specified channel."""
+        pass
+
+    def SetVoltageRange(self, channel: str, voltage_level_range: float = 6, auto_range: bool = False) -> None:
+        """Sets the voltage range for the specified channel."""
+        pass
+
+    def SetPulseBaseCurrentLimit(self, channel: str, pulse_current_limit: float = 0.01) -> None:
+        """Configures the limit for the pulse base current for the specified channel."""
+        pass
+
+    def SetPulseBaseCurrentLevel(self, channel: str, pulse_current_level: float = 0.1) -> None:
+        """Sets the desired pulse base current level for the specified channel."""
+        pass
+
+    def SetPulseBaseVoltageLimit(self, channel: str, pulse_voltage_limit: float = 0.1) -> None:
+        """Configures the maximum allowable pulse base voltage limit for the specified channel."""
+        pass
+
+    def SetPulseBaseVoltageLevel(self, channel: str, pulse_voltage_level: float = 0.2) -> None:
+        """Sets the desired pulse base voltage level for the specified channel."""
+        pass
+
+    def SetPulseCurrentLimit(self, channel: str, pulse_current_limit: float = 0.1) -> None:
+        """Sets the pulse current limit for the specified channel."""
+        pass
+
+    def SetPulseCurrentLimitRange(self, channel: str, pulse_current_limit_range: float = 0.1, auto_range: bool = False) -> None:
+        """Sets the pulse current limit range for the specified channel."""
+        pass
+
+    def SetPulseCurrentLevel(self, channel: str, pulse_current_level: float = 0.1) -> None:
+        """Sets the pulse current level for the specified channel."""
+        pass
+
+    def SetPulseCurrentLevelRange(self, channel: str, pulse_current_level_range: float, auto_range: bool = False) -> None:
+        """Sets the pulse current level range for the specified channel."""
+        pass
+
+    def SetPulseVoltageLimit(self, channel: str, pulse_voltage_limit: float = 3) -> None:
+        """Sets the pulse voltage limit for the specified channel."""
+        pass
+
+    def SetPulseVoltageLimitRange(self, channel: str, pulse_voltage_limit_range: float = 3, auto_range: bool = False) -> None:
+        """Sets the pulse voltage limit range for the specified channel."""
+        pass
+
+    def SetPulseVoltageLevel(self, channel: str, pulse_voltage_level: float = 1) -> None:
+        """Sets the pulse voltage level for the specified channel."""
+        pass
+
+    def SetPulseVoltageLevelRange(self, channel: str, pulse_voltage_level_range: float = 3, auto_range: bool = False) -> None:
+        """Sets the pulse voltage level range for the specified channel."""
         pass
