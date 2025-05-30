@@ -1,234 +1,213 @@
-# Power Meter
+# RF Source for Semiconductor Validation
 
-A **Power Meter** is a precision instrument used to measure electrical power in various circuits and devices. In **semiconductor validation**, it plays a critical role in evaluating the power consumption and efficiency of semiconductor components under different operating conditions.
+An **RF Source** is an essential instrument used to generate high-frequency signals for testing and validating semiconductor devices, ensuring they meet performance standards in RF and microwave applications.
 
 ---
 
 ## **Key Features**
 
-### **High Accuracy Power Measurement**
-- Measures both DC and AC power with high precision.
-- Provides real-time power consumption analysis for semiconductor devices.
+### **Wide Frequency Range**
+- Covers frequencies from a few kHz to several GHz, enabling comprehensive RF testing.
+- Supports testing of various semiconductor devices, including amplifiers, mixers, and oscillators.
 
-### **Wide Dynamic Range**
-- Supports low-power and high-power measurements across a broad range.
-- Ensures accurate readings even for ultra-low power semiconductor devices.
+### **High Signal Purity**
+- Provides low phase noise and minimal distortion.
+- Ensures accurate characterization of semiconductor performance under real-world conditions.
 
-### **Multi-Parameter Measurement**
-- Measures voltage, current, and power simultaneously.
-- Offers insights into power factor, frequency, and total harmonic distortion (THD).
+### **Power Level Control**
+- Offers precise control over output power.
+- Facilitates testing across a wide range of operating conditions.
 
 ---
 
 ## **Applications**
 
 ### **Semiconductor Device Validation**
-- Evaluates power consumption of transistors, ICs, and other semiconductor components.
-- Assesses power efficiency under various load conditions.
+- Validates RF and microwave components such as transistors, diodes, and MMICs.
+- Ensures compliance with design specifications and performance requirements.
 
-### **Power Characterization of Integrated Circuits**
-- Monitors power usage in microcontrollers, processors, and memory devices.
-- Validates power management features such as dynamic voltage scaling.
+### **RF Circuit Characterization**
+- Assesses the behavior of RF circuits under different signal conditions.
+- Measures gain, noise figure, and linearity of RF systems.
 
-### **Battery and Energy Efficiency Testing**
-- Tests power consumption in battery-operated devices.
-- Ensures optimal energy efficiency for low-power applications.
+### **Antenna and Wireless System Testing**
+- Evaluates antenna performance and wireless communication systems.
+- Tests signal propagation, attenuation, and interference effects.
 
 ---
 
 ## **Advantages**
 
-### **Enhanced Accuracy and Stability**
-- Ensures reliable power measurements with minimal noise and errors.
-- Suitable for highly sensitive semiconductor devices.
+### **High Accuracy and Stability**
+- Ensures precise frequency and amplitude control for reliable measurements.
+- Minimizes signal drift and deviations during long-duration tests.
 
-### **Real-Time Data Analysis**
-- Provides immediate feedback on power variations.
-- Enables quick identification of anomalies during validation.
+### **Versatility in Testing**
+- Supports a variety of modulation schemes and signal types.
+- Enables evaluation of different RF scenarios for comprehensive analysis.
 
-### **Automation and Integration**
-- Seamlessly integrates with automated test systems.
-- Facilitates efficient validation of multiple devices.
+### **Automation and Remote Control**
+- Integrates easily with automated test setups.
+- Allows remote operation and real-time adjustments for efficient testing.
 
 ---
 
 ## **Abstract Methods**
 ---
-### 1. `StopMeasurement`
+
+### 1. `Close`
 #### Description
-Halts all ongoing measurement operations and immediately returns the Power Meter to IDLE state. This ensures safe interruption of measurements and prepares the instrument for new commands.
+Terminates the RF Source session and releases allocated resources. This ensures proper cleanup of system resources and communication channels.
 
 #### Input Parameters
 | S.No | Parameter       | Type   | Options | Default |
 |:--:|:----------------|:------:|:--------|:--------|
 | 1   | Instrument Address | String | -       | -       |
 | 2   | Channel           | String | -       | -       |
-| 3   | Additional Info   | Any    | -       | -       |
+| 3   | operation         | Enum   | Close & Destroy, Destroy & Don't Close | Close & Destroy |
 
 #### Output Parameters
 None
-### 2. `PerformCalibration`
+
+### 2. `GetFrequency`
 #### Description
-Executes calibration or zero correction procedures on the selected channel to maintain measurement accuracy. This process compensates for internal offsets, temperature drift, and ensures precise power measurements across the operating range.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Action            | Enum   | All, Calibration, Zeroing | All |
-| 4   | Additional Info   | Any    | -       | -       |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1   | Calibration  | 1D-Array |
-### 3. `TerminateSession`
-#### Description
-Closes the active instrument session and releases all allocated resources. This ensures proper cleanup of communication channels and system resources before terminating the connection.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Operation       | Enum | Close & Destroy, Destroy & Don't Close | Close & Destroy |
-
-#### Output Parameters
-None
-### 4. `SetAveraging`
-#### Description
-Optimizes measurement accuracy by configuring the number of samples to average. Higher averaging counts reduce random noise and improve measurement stability, though at the cost of increased measurement time. Supports auto-averaging for automatic optimization when available.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Averaging Length       | I32    | -       | -       |
-| 4   | Enable Averaging      | Boolean    | true, false  | false   |
-| 5   | Enable Auto Averaging | Boolean    | true, false  | false   |
-| 6   | Additional Info   | Any    | -       | -       |
-
-#### Output Parameters
-None
-### 5. `ConfigureExternalTrigger`
-#### Description
-Establishes precise timing control for measurements by configuring external trigger parameters. Controls trigger slope, measurement delay, and width to synchronize power measurements with external events or other instruments in the test system.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Trigger Type   | Enum   | Power, External | Power   |
-| 4   | Measurement Delay | Double | -       | -       |
-| 5   | Measurement Width | Double | -       | -       |
-| 6   | Trigger Slope   | Enum  | Positive, Negative  | Positive  |
-| 7   | Trigger Level   | Double | - | - |
-| 8   | Additional Info | Any | - | - |
-
-#### Output Parameters
-None
-### 6. `SetFrequency`
-#### Description
-Sets the frequency parameter used for sensor correction factor calculations. This critical setting ensures accurate power measurements by applying appropriate frequency-dependent compensations to the measured values.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Frequency       | Double | -    | -       |
-| 4   | Additional Info | Any  | -       | -       |
-
-#### Output Parameters
-None
-### 7. `SetupPowerMeter`
-#### Description
-Establishes the fundamental measurement configuration including measurement function, units, and channel relationships. Supports various measurement modes including single, relative, difference, and ratio measurements for comprehensive power analysis.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Measurement Function | Enum | Single, Single Relative, Difference, Difference Relative, Ratio, Ratio Relative | Single |
-| 4   | Units           | Enum   | dBm, W | dBm      |
-| 5   | Channel Relative | String | -  | -  |
-| 6   | Resolution     | Double | - | - |
-| 7   | Additional Info | Any | - | - |
-
-#### Output Parameters
-None
-### 8. `SetTriggerMode`
-#### Description
-Defines the trigger source and behavior for measurements. Supports multiple trigger sources including immediate, bus, external, and internal triggers, allowing flexible integration with test systems and measurement sequences.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Source          | Enum   | Immediate, Bus, Hold, External, Internal A, Internal B | Immediate |
-| 4   | Additional Info | Any | - | - |
-
-#### Output Parameters
-None
-### 9. `Initialize`
-#### Description
-Establishes a new instrument session or retrieves an existing one. This fundamental setup process configures communication parameters and prepares the power meter for operation according to the specified initialization mode.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Power Meter Type | String | -       | -       |
-| 4   | Operation       | Enum | Create New Session, Fetch Existing Session | Create New Session |
-
-#### Output Parameters
-None
-### 10. `StartMeasurement`
-#### Description
-Begins a new measurement sequence according to the current configuration. This trigger-based operation prepares the instrument to capture power measurements based on the defined trigger conditions.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Additional Info | Any   | -       | -       |
-
-#### Output Parameters
-None
-### 11. `ExecuteMeasurement`
-#### Description
-Executes the configured measurement operation and returns the results. Captures power readings according to the current measurement mode, averaging settings, and trigger configuration.
-
-#### Input Parameters
-| S.No | Parameter       | Type   | Options | Default |
-|:--:|:----------------|:------:|:--------|:--------|
-| 1   | Instrument Address | String | -       | -       |
-| 2   | Channel           | String | -       | -       |
-| 3   | Measuring Function | Enum | Measure, Read, Fetch | Measure   |
-| 4   | Additional Info | Any   | -       | -       |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1   | Measurement  | 1D-Array  |
-### 12. `FactoryReset`
-#### Description
-Returns the Power Meter to its default factory state. This operation clears all user-defined settings, aborts any ongoing measurements, and establishes a known baseline configuration for the instrument.
+Retrieves the frequency measurement from the instrument.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
-| 1   | Instrument Address | String | - | - |
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+| S.No | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Frequency | Double |
+
+### 3. `GetPower`
+#### Description
+Retrieves the power measurement from the instrument.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+| S.No | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Power | Double |
+
+### 4. `Init`
+#### Description
+Initializes the RF Source by establishing communication and preparing the device for operation. This must be called before using other functions.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | rf_source_type    | String | -       | -       |
+| 4   | operation         | Enum   | Create New Session, Fetch Existing Session | Create New Session |
+
+#### Output Parameters
+None
+
+### 5. `Reset`
+#### Description
+Resets the RF Source to its default configuration. This ensures a known state by restoring factory settings and clearing any previous configurations.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
 | 2   | Channel           | String | -       | -       |
 
 #### Output Parameters
 None
 
+### 6. `SetFrequency`
+#### Description
+Sets the output frequency of the RF Source. This function controls the fundamental signal frequency generated by the device.
 
+#### Input Parameters
+| S.No | Parameter       | Type   | Options | Default |
+|:--:|:----------------|:------:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | Frequency         | Double | -       | -       |
+
+#### Output Parameters
+None
+
+### 7. `SetFrequencyMultiplier`
+#### Description
+Configures the frequency multiplication factor. This allows generation of higher frequencies by multiplying the base frequency.
+
+#### Input Parameters
+| S.No | Parameter       | Type   | Options | Default |
+|:--:|:----------------|:------:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | Multiplier        | Double | -       | -       |
+
+#### Output Parameters
+None
+
+### 8. `SetPower`
+#### Description
+Sets the RF output power level. This controls the signal amplitude at the output port to meet specific testing requirements.
+
+#### Input Parameters
+| S.No | Parameter       | Type   | Options | Default |
+|:--:|:----------------|:------:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | Power             | Double | -       | -       |
+
+#### Output Parameters
+None
+
+### 9. `SetPulse`
+#### Description
+Configures the external pulse and pulse modulation settings. This enables control of RF output using external trigger sources and pulse modulation for specific applications.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:----:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | enable_external_pulse | Boolean | true, false | false |
+| 4   | enable_pulse_modulation | Boolean | true, false | false |
+
+#### Output Parameters
+None
+
+### 10. `SetReferenceFrequency`
+#### Description
+Configures the external reference frequency for improved frequency accuracy and stability. This allows synchronization with external frequency standards.
+
+#### Input Parameters
+| S.No | Parameter       | Type   | Options | Default |
+|:--:|:----------------|:------:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | External Reference Frequency (Hz) | Double | - | 10 |
+
+#### Output Parameters
+None
+
+### 11. `ToggleOutput`
+#### Description
+Controls the RF output state of the source. When enabled, the RF signal is generated at the output port according to the configured settings.
+
+#### Input Parameters
+| S.No | Parameter       | Type   | Options | Default |
+|:--:|:----------------|:------:|:--------|:--------|
+| 1   | Instrument Address | String | -       | -       |
+| 2   | Channel           | String | -       | -       |
+| 3   | enable            | Boolean | true, false | false |
+
+#### Output Parameters
+None
