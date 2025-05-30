@@ -1,60 +1,54 @@
-# Electronic Load
+# Function Generator (FGEN)
 
-An **Electronic Load** is a programmable instrument used to simulate various electrical loads by dissipating power from a **Device Under Test (DUT)**. It is commonly used in semiconductor validation, power supply testing, and battery performance evaluation.
+A **Function Generator (FGEN)** is an electronic device that generates various waveforms, such as **sine**, **square**, and **triangle** signals, used for testing, troubleshooting, and designing electronic circuits.
 
 ---
 
 ## **Key Features**
 
-### **Constant Operating Modes**
-- **Constant Current (CC):** Maintains a fixed current regardless of voltage changes.
-- **Constant Voltage (CV):** Holds a steady voltage while varying current.
-- **Constant Power (CP):** Regulates power consumption by adjusting current and voltage.
-- **Constant Resistance (CR):** Simulates a fixed resistive load for testing.
+### **Multiple Waveform Generation**
+- Produces sine, square, triangle, ramp, and pulse waveforms.
+- Provides flexibility in simulating different signal types.
 
-### **Dynamic Load Simulation**
-- Supports fast load changes to simulate real-world operating conditions.
-- Allows accurate evaluation of transient response and stability.
+### **Adjustable Frequency and Amplitude**
+- Allows precise control over output frequency and voltage levels.
+- Supports a wide range of frequency settings to meet diverse application needs.
 
-### **Parallel and Series Operation**
-- Enables connection of multiple loads to handle high-power applications.
-- Supports both parallel and series configurations for greater flexibility.
+### **Modulation Capability**
+- Supports amplitude modulation (AM), frequency modulation (FM), and phase modulation (PM).
+- Enables advanced signal testing and simulation.
 
 ---
 
 ## **Applications**
 
-### **Power Supply Testing**
-- Verifies the performance and stability of power supplies under different load conditions.
-- Evaluates output voltage regulation, efficiency, and ripple response.
+### **Circuit Testing and Debugging**
+- Simulates input signals to test circuit responses.
+- Helps diagnose and troubleshoot signal processing issues.
 
-### **Battery and Fuel Cell Testing**
-- Simulates discharge profiles to assess battery capacity and lifecycle.
-- Measures internal resistance and validates the efficiency of energy storage systems.
+### **Device Characterization**
+- Evaluates the performance of amplifiers, filters, and other components.
+- Assesses frequency response, gain, and distortion characteristics.
 
-### **Semiconductor Validation**
-- Tests voltage and current limits of semiconductor devices.
-- Evaluates thermal performance and safe operating areas (SOA).
-
-### **DC-DC Converter Analysis**
-- Assesses the dynamic response and efficiency of DC-DC converters.
-- Simulates load changes to evaluate switching performance.
+### **Educational and Research Purposes**
+- Demonstrates signal behavior in laboratories and classrooms.
+- Provides hands-on learning for waveform analysis and circuit design.
 
 ---
 
 ## **Advantages**
 
-### **High Accuracy and Resolution**
-- Provides precise control over load conditions.
-- Ensures reliable results for sensitive applications.
+### **Versatility and Flexibility**
+- Generates multiple waveforms for diverse applications.
+- Adjustable parameters allow customized signal generation.
 
-### **Versatile and Configurable**
-- Supports multiple operating modes to suit a variety of test scenarios.
-- Offers programmable sequences to automate testing processes.
+### **High Signal Fidelity**
+- Produces accurate and stable waveforms with minimal distortion.
+- Ensures reliable performance in sensitive applications.
 
-### **Protection and Safety Features**
-- Includes overvoltage, overcurrent, and overpower protection.
-- Prevents damage to both the DUT and the electronic load.
+### **Ease of Integration**
+- Interfaces with oscilloscope, spectrum analyzers, and other test equipment.
+- Facilitates automated testing and system analysis.
 
 ---
 
@@ -63,11 +57,11 @@ An **Electronic Load** is a programmable instrument used to simulate various ele
 
 ### 1. `Abort`
 #### Description
-Stops any ongoing operations on the Electronic Load, bringing it to a safe state.
+Stops the current operation on the specified channel(s) of the Function Generator.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
+|:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
@@ -76,265 +70,328 @@ None
 
 ### 2. `Close`
 #### Description
-Terminates the instrument session of the Electronic Load, releasing all allocated resources.
+Terminates the instrument session for the specified channel(s) of the Function Generator.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Operation | Enum | Close & Destroy, Destroy & Don't Close| Close & Destroy |
+
+#### Output Parameters
+None
+
+### 3. `Configure Burst Mode`
+#### Description
+Sets up burst modulation for the specified channel(s) of the Function Generator.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Enable Burst Mode | Boolean | false, true | false |
+| 4 | Burst Phase | Double | - | - |
+| 5 | Burst Cycle | Integer | - | 1 |
+| 6 | Burst Period | Double | - | - |
+| 7 | Trigger Source | Enum |Internal, External, Manual | Internal |
+| 8 | Additional input | Any | - | - |
+| 9 | Burst Mode | Enum | Triggered, Gated | Triggered |
+| 10 | Gate Polarity | Enum | Normal, Inverted | Normal |
+
+#### Output Parameters
+None
+
+### 4. `Set High Low Level`
+#### Description
+Configures the high-level and low-level of the output signal for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Value High in V | Double | - | 0.5 |
+| 4 | Value Low in V | Double | -0.5 |
+
+#### Output Parameters
+None
+
+### 5. `Set Output Polarity`
+#### Description
+Inverts the waveform relative to the offset voltage for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Output Polarity | Enum | Normal, Inverted | Normal |
+
+#### Output Parameters
+None
+
+### 6. `Set Pulse Delay`
+#### Description
+Configures the pulse delay value and unit for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Pulse Delay Unit | Enum | Seconds, Radians, Percent, Degree | Seconds |
+| 4 | Pulse Delay Value | Double | - | - |
+
+#### Output Parameters
+None
+
+### 7. `Set Pulse Duty Cycle`
+#### Description
+Configures the Duty Cycle of the Pulse waveform for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Duty Cycle | Double| - | 50.00 |
+
+#### Output Parameters
+None
+
+### 8. `Configure Pulse Waveform`
+#### Description
+Sets up the parameters for the pulse waveform for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Leading Edge Time | Double | - | 5E-9 |
+| 4 | Trailing Edge Time | Double | - | 5E-9 |
+| 5 | Pulse Width | Double | - | 0.0001 |
+| 6 | Pulse Period | Double | - | 0.001 |
+
+#### Output Parameters
+None
+
+### 9. `Set Ramp Waveform`
+#### Description
+Configures the Symmetry of the Ramp waveform for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Percentage | Double | - | 100.0 |
+
+#### Output Parameters
+None
+
+### 10. `Set Square Waveform`
+#### Description
+Configures the Duty Cycle of the Square waveform for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Duty Cycle | Double | - | 50.00 |
+
+#### Output Parameters
+None
+
+### 11. `Set Standard Waveform`
+#### Description
+Configures the waveform shape for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Dc Offset | Double | - | - |
+| 4 | Frequency | Double | - | 1000 |
+| 5 | Start Phase | Double | -| - |
+| 6 | Waveform | Enum| Sine, Square, Ramp Up, DC, Noise, Triangle, Pulse, Ramp Down, Ramp | Sine |
+| 7 | Amplitude | Double | - | 0.10 |
+| 8 | Additional input | Any | - | - |
+
+#### Output Parameters
+None
+
+### 12. `Configure Frequency Sweep`
+#### Description
+Sets up the Frequency Sweep for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Power Array | 1D-Array | - | - |
+| 4 | Dwell Time Array | 1D-Array | - | 0.002 |
+| 5 | Frequency Array | 1D-Array | - | 1000 |
+
+#### Output Parameters
+None
+
+### 13. `Configure Channel Tracking`
+#### Description
+Sets up tracking mode for channels 1 and 2 of a two-channel waveform generator.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Track Mode | Enum | ON, OFF, Invert | ON |
+| 4 | Source Channel | Enum | 1, 2 | 1 |
+
+#### Output Parameters
+None
+
+### 14. `Set Trigger Slope`
+#### Description
+Configures the polarity of the External Trigger terminal for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Trigger Slope | Enum | Positive, Negative | Positive |
+
+#### Output Parameters
+None
+
+### 15. `Set Trigger Source`
+#### Description
+Configures the Trigger Source for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Trigger Source | Enum  | Immediate, External, Software(Bus), Internal | Software(Bus) |
+
+#### Output Parameters
+None
+
+### 16. `Disable Channel Output`
+#### Description
+Turns off the output of the specified channel(s) of the Function Generator.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 3. `SetAutoRange`
+### 17. `Enable Channel Output`
 #### Description
-Sets auto range settings for the selected type in specified channel(s) of the Electronic Load.
+Turns on the output of the specified channel(s) of the Function Generator.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
-| 4 | auto_range | Boolean | true, false | false |
-
-#### Output Parameters
-None
-
-### 4. `SetManualRange`
-#### Description
-Sets the manual range for the selected type in specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
-| 4 | manual_range | Double | - | - |
-
-#### Output Parameters
-None
-
-### 5. `SetOperationMode`
-#### Description
-Sets the operation mode of the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | operation_mode | Enum | Constant Current(CC), Constant Voltage(CV),  Constant Power (CP), Constant Resistance (CR) | Constant Current (CC) |
-
-#### Output Parameters
-None
-
-### 6. `SetOverCurrentProtection`
-#### Description
-Sets Over Current Protection (OCP) limit and mode for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | ocp_limit | Double | - | 33 A |
-| 4 | ocp_mode | Enum | Limit, Trip | Limit |
-
-#### Output Parameters
-None
-
-### 7. `SetOverPowerProtection`
-#### Description
-Sets Over Power Protection (OPP) limit and mode for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | opp_limit | Double | - | 165 W |
-| 4 | opp_mode | Enum | Limit, Trip | Limit |
-
-#### Output Parameters
-None
-
-### 8. `SetRange`
-#### Description
-Sets the range for the selected type in specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | range | Enum | Low, Medium, High | Low |
-| 4 | range_type | Enum | Current, Voltage, Power, Conductance | Current |
-
-#### Output Parameters
-None
-
-### 9. `SetResponseSpeed`
-#### Description
-Sets the response speed for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | response_speed | Enum | Normal Response Speed, 1/2 the Normal Response Speed, 1/5 Normal Response Speed, 1/10 Normal Response Speed, Fast Response Speed | Normal Response Speed |
-
-#### Output Parameters
-None
-
-### 10. `SetSlewRate`
-#### Description
-Sets the current slew rate in amps per microseconds for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | slew_rate | Double | - | 2.4 A/µs |
-
-#### Output Parameters
-None
-
-### 11. `SetSoftStartDuration`
-#### Description
-Sets the Soft Start Duration (applicable only for Constant Current Mode) for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | soft_start_duration | Double | - | - |
-
-#### Output Parameters
-None
-
-### 12. `SetSwitchingFunction`
-#### Description
-Sets the switching properties for the specified channel(s) of the Electronic Load. Switching properties are used to execute two load settings repetitively. This is applicable only for CC and CR Modes.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | enable_switching | Boolean | true, false | false |
-| 4 | duty_cycle | Double | - | 5% |
-| 5 | pulse_frequency | Double | - | 1 Hz |
-| 6 | switching_level | Double | - | - |
-
-#### Output Parameters
-None
-
-### 13. `SetTiming`
-#### Description
-Sets the Cutoff Time for the specified channel(s) of the Electronic Load. Cutoff Time is the auto load off time which turns off the load after the specified time elapses.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | cutoff_time | I32 | - | - |
-
-#### Output Parameters
-None
-
-### 14. `SetUnderVoltageProtection`
-#### Description
-Turns ON/OFF Under Voltage Protection (UVP) and sets its limit for the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | uvp_limit | Double | - | - |
-| 4 | enable_uvp | Boolean | true, false | false |
-
-#### Output Parameters
-None
-
-### 15. `SetValue`
-#### Description
-Sets the value for the selected type in specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | value | Double | - | - |
-| 4 | value_type | Enum | Current, Voltage, Power, Conductance | Current |
-
-#### Output Parameters
-None
-
-### 16. `ToggleLoad`
-#### Description
-Enables/disables load from the specified channel(s) of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | enable_load | Boolean | true, false | false |
-
-#### Output Parameters
-None
-
-### 17. `Init`
-#### Description
-Initializes the session of the Electronic Load.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
+|:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
 
-### 18. `MeasureValues`
+### 18. `Init`
 #### Description
-Measures the current, voltage, power, and elapsed time values from the specified channel.
+Starts the session of the Function Generator.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
+|:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
+| 3 | FGEN Type | String | - | - |
+| 4 | Operation | Enum | Close & Destroy, Destroy & Don't Close| Close & Destroy |
 
 #### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | current | Double |
-| 2 | voltage | Double |
-| 3 | power | Double |
-| 4 | elapsed_time | Double |
+None
 
-### 19. `Reset`
+### 19. `Initiate`
 #### Description
-Resets the Electronic Load.
+Begins the specified channel(s) of the Function Generator.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
+|:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
+
+### 20. `Reset`
+#### Description
+Resets the specified Function Generator.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+None
+
+### 21. `Send Software Trigger`
+#### Description
+Sends a software trigger to the specified Function Generator. Trigger Source must be set to 'Software(Bus)' to send a software trigger.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+None
+
+### 22. `Set Load Impedance`
+#### Description
+Configures the load impedance for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Load Impedance | Double | - | 50.0 |
+
+#### Output Parameters
+None
+
+### 23. `Set Output Impedance`
+#### Description
+Configures the output impedance for the specified channel(s).
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Impedance | Double | - | 50.0 |
+
+#### Output Parameters
+None
+
+
 
 
