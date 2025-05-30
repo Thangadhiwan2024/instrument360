@@ -1,103 +1,64 @@
-# Digital Pattern Generator (DPG)
+# Digital Multimeter (DMM)
 
-A **Digital Pattern Generator (DPG)** is an electronic instrument used to create precisely timed digital signals for testing and evaluating digital circuits and systems. It is essential for simulating real-world conditions in semiconductor testing, communication systems, and embedded applications.
+A **Digital Multimeter (DMM)** is a versatile electronic instrument used for measuring electrical parameters such as voltage, current, and resistance. It is an essential tool for diagnosing, troubleshooting, and testing electronic circuits and systems.
 
 ---
 
 ## **Key Features**
+### **Accurate Voltage Measurement**
+- Measures both **AC and DC voltage** with high precision.
+- Supports a wide range of voltage levels for various applications.
 
-### **High-Speed Pattern Generation**
-- Generates digital signals at high clock rates with minimal jitter.  
-- Ensures precise timing and synchronization for complex test scenarios.
+### **Current Measurement**
+- Measures **AC and DC current** with selectable ranges.
+- Includes protection against overcurrent to prevent damage.
 
-### **Flexible Pattern Configuration**
-- Supports custom pattern creation with variable clock frequencies.  
-- Allows user-defined sequences, loops, and branching for complex test patterns.
+### **Resistance and Continuity Testing**
+- Accurately measures resistance values across components.
+- Provides a **continuity test** with audible alerts to detect closed circuits.
 
-### **Multi-Channel Operation**
-- Provides multiple output channels for simultaneous signal generation.  
-- Enables testing of multi-lane interfaces and high-speed digital devices.
+### **Capacitance and Frequency Measurement**
+- Measures capacitance to verify the condition of capacitors.
+- Analyzes signal frequency to ensure consistent waveform characteristics.
 
 ---
 
 ## **Applications**
+### **Circuit Troubleshooting**
+- Identifies faulty components and incorrect connections.
+- Measures voltage drops, continuity, and current to diagnose issues.
 
-### **Semiconductor Testing**
-- Validates the functionality and timing characteristics of ICs and microprocessors.  
-- Simulates digital input signals to verify chip performance under different conditions.
+### **Electrical System Testing**
+- Ensures compliance with electrical standards by verifying system voltage and current.
+- Validates wiring integrity through continuity and resistance tests.
 
-### **Embedded System Development**
-- Generates communication protocols to test embedded systems.  
-- Emulates input signals for firmware validation and hardware debugging.
-
-### **Communication Protocol Simulation**
-- Tests high-speed interfaces such as SPI, I2C, and UART.  
-- Evaluates data transmission reliability and signal integrity.
+### **Component Testing**
+- Measures component characteristics such as resistance, capacitance, and frequency.
+- Ensures that components function within expected tolerances.
 
 ---
 
 ## **Advantages**
+### **High Measurement Accuracy**
+- Delivers consistent and accurate readings across different ranges.
+- Reduces uncertainty in measurement results.
 
-### **Precision Timing and Synchronization**
-- Provides accurate control over signal timing to detect timing errors.  
-- Ensures signal integrity during high-speed operations.
+### **Portability and Ease of Use**
+- Compact and lightweight, making it ideal for field use.
+- Simple interface with intuitive controls for quick operation.
 
-### **Versatility and Customization**
-- Allows easy modification of test patterns for different test requirements.  
-- Supports various logic levels and voltage ranges for flexible operation.
-
-### **Automation and Integration**
-- Integrates with automated test equipment (ATE) for streamlined workflows.  
-- Enables consistent, repeatable testing in production environments.
+### **Versatility and Multi-Functionality**
+- Combines multiple measurement functions into one device.
+- Suitable for use in various electrical and electronic applications.
 
 ---
 
 ## **Abstract Methods**
 ---
 
-### 1. `SetLevelsAndTiming`
+### 1. `StopMeasurement`
 #### Description
-Configures voltage/current levels and timing parameters for digital pins based on provided sheets and settings.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Initial State(High Pins, Low Pins, TriState Pins) | String | - | - |
-| 4 | Site List | String | - | - |
-| 5 | Levels Sheet | String | - | - |
-| 6 | Timing Sheet | String | - | - |
-
-#### Output Parameters
-None
-
-
-### 2. `BurstPattern`
-#### Description
-Runs a digital pattern burst starting from the specified label with configurable parameters for timing and execution control.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Start Label | String | - | - |
-| 4 | Select Digital Function | Boolean | true, false | true |
-| 5 | Site List | String | - | - |
-| 6 | Timeout  | Double | - | 10 |
-| 7 | Wait Until Done | Boolean | true, false | true |
-| 8 | Burst Only | Boolean | true, false | true |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Pass | 1D-Array |
-
-
-### 3. `Close`
-#### Description
-Terminates the connection to the digital instrument and releases associated resources.
+Stops the previously initiated measurement. This function halts any ongoing measurements and returns the DMM to an idle state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
@@ -108,72 +69,139 @@ Terminates the connection to the digital instrument and releases associated reso
 #### Output Parameters
 None
 
-
-### 4. `Initialize`
+### 2. `TerminateSession`
 #### Description
-Initializes the digital instrument with specified generation type settings.
+Terminates the instrument session. This function ends the connection with the DMM and releases system resources.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | DP Gen Type | String | - | - |
+| 3 | operation | string | Close & Destroy, Destroy & Don't Close | Close & Destroy |
 
 #### Output Parameters
 None
 
-
-### 5. `LoadPattern`
+### 3. `SetNPLC`
 #### Description
-Loads a digital test pattern from the specified file into the instrument's memory.
+Configures the number of Power Line Cycles (NPLC) in a DMM. This setting affects measurement integration time and noise rejection.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Pattern File | File Path | - | - |
+| 3 | Function | Enum | DC Volts, AC Volts, DC Current, AC Current, Diode, Power Meter, Capacitance, Temperature, Frequency, 2-Wire Resistance, 4 Wire Resistance | DC Volts|
+| 4 | NPLC | Double | - | 0.02 |
 
 #### Output Parameters
 None
 
-
-### 6. `LoadPinMap`
+### 4. `ConfigureMeasurement`
 #### Description
-Sets up the pin mapping for the digital instrument using the specified pin map file.
+Sets up the measurement function, range, and resolution in digits for a DMM. This function configures the basic measurement parameters.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Pin Map File Path | File Path | - | - |
+| 3 | Resolution in digits | Enum | 3 1/2, 4 1/2, 5 1/2, 6 1/2, 7 1/2, 8 1/2 | 8 1/2|
+| 4 | Function | Enum | DC Volts, AC Volts, DC Current, AC Current, Diode, Power Meter, Capacitance, Temperature, Frequency, 2-Wire Resistance, 4 Wire Resistance | DC Volts|
+| 5 | Range | Double | - | 0.02 |
+| 6 | Additional info | Object | - | - |
 
 #### Output Parameters
 None
 
-
-### 7. `LoadSpecificationsLevelsAndTiming`
+### 5. `ToggleDisplay`
 #### Description
-Loads multiple configuration files for specifications, voltage/current levels, and timing parameters.
+Enables or disables the display on the DMM. This function controls the front panel display visibility.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Specifications File Paths | 1D-Array | - | - |
-| 4 | Levels File Paths | 1D-Array | - | - |
-| 5 | Timing File Paths | 1D-Array | - | - |
+| 3 | Display | Enum | ON, OFF | ON |
 
 #### Output Parameters
 None
 
-
-### 8. `UnloadPattern`
+### 6. `SetupMultiPointTrigger`
 #### Description
-Deletes the currently loaded digital test pattern from the instrument's memory.
+Configures the trigger source, trigger count, readings per trigger event, and sample interval to enable multipoint functionality for automated measurements.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Trigger Source | Enum | Auto, Immediate, External, Manual, Bus/Source | Immediate |
+| 4 | Trigger Count | Integer | - | 1 |
+| 5 | Sample Count | Integer | - | 1 |
+| 6 | Sample Interval | Integer | - | 0 |
+
+#### Output Parameters
+None
+
+### 7. `InitializeSession`
+#### Description
+Initializes the session of the DMM. This function establishes communication with the instrument and prepares it for operation.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Operation | Enum | Create New Session, Fetch Existing Session | Create New Session |
+
+#### Output Parameters
+None
+
+### 8. `StartMeasurement`
+#### Description
+Starts the DMM for measurements. This function prepares the instrument to begin taking measurements based on the current configuration.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+None
+
+### 9. `ReadMultipleMeasurements`
+#### Description
+Reads multiple measurements equal to the entered sample count in DMM.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+None
+
+### 10. `ReadSingleMeasurement`
+#### Description
+Reads a single measurement equal to the entered sample count in DMM.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+None
+
+### 11. `RestoreDefaults`
+#### Description
+Restores the DMM to its default settings. This function returns the instrument to a known state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
