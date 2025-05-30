@@ -1,67 +1,63 @@
-# Spectrum Analyzer
+# Thermostream
 
-A **Spectrum Analyzer** is an essential electronic instrument used to measure and visualize the frequency spectrum of signals. It provides insights into signal strength, noise, and distortion across a specified frequency range, making it indispensable for RF and communication system analysis.
+A **Thermostream** is a temperature forcing system used to rapidly heat or cool electronic devices and components. It provides precise temperature control, making it ideal for thermal testing, component characterization, and environmental stress testing.
 
 ---
 
 ## **Key Features**
 
-### **Wide Frequency Range**
-- Analyzes signals across a broad range of frequencies.
-- Capable of detecting signals from a few Hz to several GHz.
+### **Rapid Temperature Cycling**
+- Quickly transitions between high and low temperatures.
+- Ensures accurate temperature control within a wide operating range.
 
-### **High Resolution and Sensitivity**
-- Offers fine frequency resolution to distinguish closely spaced signals.
-- Detects low-level signals with high sensitivity.
+### **Non-Contact Temperature Forcing**
+- Delivers controlled airflow to the **Device Under Test (DUT)**.
+- Minimizes thermal lag and ensures uniform temperature distribution.
 
-### **Real-Time Spectrum Analysis**
-- Continuously monitors and captures transient signals.
-- Provides real-time visualization of signal behavior.
+### **User-Programmable Profiles**
+- Allows creation of custom temperature profiles for various test scenarios.
+- Supports automation for consistent and repeatable results.
 
 ---
 
 ## **Applications**
 
-### **RF and Wireless Communication Testing**
-- Evaluates signal quality, bandwidth, and modulation accuracy.
-- Identifies interference sources in wireless networks.
+### **Semiconductor Testing**
+- Validates device performance across extreme temperature ranges.
+- Detects thermal failures and ensures reliability in harsh environments.
 
-### **EMI/EMC Testing**
-- Detects and analyzes electromagnetic interference (EMI) in electronic systems.
-- Ensures compliance with electromagnetic compatibility (EMC) standards.
+### **Component Characterization**
+- Evaluates passive and active components under temperature variations.
+- Measures component stability and response to thermal stress.
 
-### **Antenna and Transmitter Characterization**
-- Measures antenna radiation patterns and transmission performance.
-- Verifies transmitter output power, harmonic distortion, and spurious emissions.
-
-### **Audio and Video Signal Analysis**
-- Analyzes frequency content of audio and video signals.
-- Identifies noise, distortion, and unwanted signal artifacts.
+### **Environmental Stress Testing (EST)**
+- Simulates real-world environmental conditions to assess device durability.
+- Identifies potential failure points by exposing devices to thermal extremes.
 
 ---
 
 ## **Advantages**
 
-### **Accurate Signal Visualization**
-- Displays amplitude vs. frequency for detailed signal analysis.
-- Identifies anomalies and unwanted frequency components.
+### **Precision Temperature Control**
+- Maintains stable temperatures with minimal fluctuations.
+- Enables accurate evaluation of device behavior under thermal conditions.
 
-### **Versatility and Flexibility**
-- Supports a variety of input signals, including analog and digital.
-- Suitable for laboratory, field, and production environments.
+### **Reduced Test Time**
+- Accelerates thermal cycling for faster test completion.
+- Improves overall efficiency in high-volume testing environments.
 
-### **Advanced Signal Processing**
-- Applies digital filtering and demodulation techniques for enhanced analysis.
-- Provides actionable insights through intuitive data presentation.
+### **Flexibility and Versatility**
+- Adapts to various device sizes and shapes.
+- Suitable for testing different materials and components.
 
 ---
 
 ## **Abstract Methods**
 ---
 
-### 1. `AlignAll`
+### 1. `Abort`
 #### Description
-This method performs a complete alignment of the instrument and returns the alignment status. It ensures optimal performance by calibrating internal components.
+Terminates any ongoing processes and returns the Thermostream to a safe state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
@@ -70,63 +66,102 @@ This method performs a complete alignment of the instrument and returns the alig
 | 2 | Channel | String | - | - |
 
 #### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | alignment_status | Boolean |
+None
 
 ### 2. `Close`
 #### Description
-This method is used to close the instrument session of the spectrum analyzer.
+Disables the air flow and closes the instrument session of the Thermostream, ensuring proper shutdown.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Operation | Enum | Close & Destroy, Destroy & Don't Close | Close & Destroy |
 
 #### Output Parameters
 None
 
-### 3. `Get Amplitude at Selected Frequency`
+### 3. `ConfigureSetpoint`
 #### Description
-Return the amplitude of selected marker at given frequency.
+Sets the temperature parameters for the Thermostream.
 
-**Note:** Marker type is set to position(normal).
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Number | Integer | -  | - |
+| 4 | Enable | Boolean | - | - |
+| 5 | Temperature | Double | - | - |
+| 6 | Window | Double | - | - |
+| 7 | Soak Time | Integer | - | - |
+| 8 | Ramp Rate | Double | - | - |
+
+#### Output Parameters
+None
+
+### 4. `ConfigureSetpointTemp`
+#### Description
+Sets the temperature setpoint for the Thermostream.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | sample_count | Integer | - | - |
+| 4 | setpoint_temp | Double | - | - |
+
+#### Output Parameters
+None
+
+### 5. `ConfigureTemperatureMeasurement`
+#### Description
+Configures the temperature measurement mode and thermocouple type of the Thermostream.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | measurement_mode | Enum | DUT Temperature, Air Temperature | DUT Temperature |
+| 4 | thermocouple_type | Enum | No Sensor, K-Type | K-Type |
+
+#### Output Parameters
+None
+
+### 6. `ControlCompressor`
+#### Description
+Manages the compressor state of the Thermostream unit.
+
+#### Input Parameters
+| S.No | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | compressor_state | Enum | On, Off | Off |
+
+#### Output Parameters
+None
+
+### 7. `Get Setpoint SoakTime`
+#### Description
+Read the Setpoint's Soak Time(in seconds) of the instrument.
 
 #### Input Parameters
 | No. | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Active Marker | Integer | - | - |
-| 4 | Frequency (Hz) | Double | - | - |
 
 #### Output Parameters
 | No. | Parameter | Type |
 |:--:|:----------|:-----|
-| 1 | Amplitude | Double |
+| 1 | Soak Time (seconds) | Integer |
 
-### 4. `Get Marker Positions`
+### 8. `Get Temperature`
 #### Description
-Retrieves the position and amplitude for a specified marker.
-
-#### Input Parameters
-| No. | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Marker Number | Integer | - | - |
-
-#### Output Parameters
-| No. | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Position | Double |
-| 2 | Amplitude | Double |
-
-### 5. `Get Sweep Points`
-#### Description
-Returns the configured sweep points of the spectrum analyzer.
+Read the temperature from Active mode(Air Temperature when in Air Control Mode, DUT Temperature when in DUT Control Mode).
 
 #### Input Parameters
 | No. | Parameter | Type | Options | Default |
@@ -137,369 +172,63 @@ Returns the configured sweep points of the spectrum analyzer.
 #### Output Parameters
 | No. | Parameter | Type |
 |:--:|:----------|:-----|
-| 1 | Sweep Points | Integer |
+| 1 | Temperature | Double |
 
-### 6. `Get Sweep Time`
+### 9. `Init`
 #### Description
-Returns the configured sweep time of the instrument.
-
-#### Input Parameters
-| No. | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-
-#### Output Parameters
-| No. | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Sweep Time | Double |
-
-### 7. `Init`
-#### Description
-This method initializes the session of the spectrum analyzer.
+Initializes the session of the Thermostream.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:----:|:--------|:--------|
-| 1 | Type | String | - | - |
-| 2 | Use Pre-Amp? | Boolean | true, false | - |
-| 3 | Operation | Enum U16 | Create New Session | - |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | thermostream_type | String | - | - |
+| 2 | Baud Rate | Integer | - | - |
+| 3 | Flow Control | Enum | - | - |
+| 4 | Parity | Enum | - | - |
+| 5 | Data Bits | Integer | - | - |
+| 6 | Stop Bits | Integer | - | - |
 
 #### Output Parameters
 None
 
-### 8. `LoadConfigFile`
+### 10. `Reset`
 #### Description
-This method loads the instrument configuration from the selected file.
+Resets the instrument to the cycle screen and clears any device-specific errors.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Selected Configuration | File Path | - | - |
 
 #### Output Parameters
 None
 
-### 9. `ReadTraceData`
+### 11. `SendDeviceCommand`
 #### Description
-This method reads trace data from the spectrum analyzer.
+Sends a device command to the Thermostream.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Trace Name | Enum | Trace 1, Trace 2, Trace3, Trace 4 | Trace 1 |
-| 4 | Maximum Time | Double | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | Initial X | Double |
-| 2 | X Increment | Double |
-| 3 | Y Array | 1D-Array |
-
-### 10. `SetActiveWindow`
-#### Description
-This method configures the active window of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Window | Integer | - | - |
+| 3 | device_command | Enum | Head Down & Air On, Head Up & Air Off, Air Flow Off, Air Flow On, Compressor Off, Compressor On | - |
 
 #### Output Parameters
 None
 
-### 11. `SetAmplitudeLevel`
+### 12. `ToggleAirFlow`
 #### Description
-Configures the amplitude (vertical) settings of the spectrum analyzer.
+Starts or stops the air flow. Deprecated: Use "WriteDeviceCommand" for air flow control.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
 | 2 | Channel | String | - | - |
-| 3 | Reference Level | Double | - | - |
-| 4 | Reference Offset | Double | - | - |
-| 5 | Units | String | - | - |
-| 6 | Attenuation Level | Double | - | - |
-| 7 | Auto Attenuation? | Boolean | - | - |
-| 8 | Amplitude Scale | String | - | - |
-| 9 | Advanced Settings | Any | - | - |
-
-#### Output Parameters
-None
-
-### 12. `SetAveragingWithTrace`
-#### Description
-This method configures the averaging settings of the spectrum analyzer along with trace-specific parameters.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Average Count | I32 | - | - |
-| 4 | Enable Averaging? | Boolean | true, false | - |
-| 5 | Averaging Type | Any | - | - |
-| 6 | Advanced Settings | Any | - | - |
-| 7 | Trace Name | Enum U16 | - | - |
-
-#### Output Parameters
-None
-
-### 13. `SetBandwidthResolution`
-#### Description
-This method configures the coupling and sweeping properties of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Manual Resolution BW | Double | - | - |
-| 4 | Enable Auto Resolution BW? | Boolean | true, false |- |
-| 5 | Enable Auto Video BW? | Boolean |true, false | - |
-| 6 | Manual Video BW (Hz) | Double | - | - |
-| 7 | Advanced Settings | Any | - | - |
-
-#### Output Parameters
-None
-
-### 14. `SetDeltaMarker`
-#### Description
-This method configures the delta marker state of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Delta Marker Number | Integer | - | - |
-| 4 | Enable? | Boolean | - | - |
-
-#### Output Parameters
-None
-
-### 15. `SetFFTWindow`
-#### Description
-This method configures the FFT window type of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Windowing Type | Any | - | - |
-
-#### Output Parameters
-None
-
-### 16. `SetInputCoupling`
-#### Description
-This method configures the coupling type at the analyzer RF input port.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Input Coupling | Enum | AC, DC | AC |
-| 4 | Advanced Settings | Any | - | - |
-
-#### Output Parameters
-None
-
-### 17. `SetInputImpedance`
-#### Description
-This method configures the input impedance of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Input Impedance (Ohm) | Enum | 50, 75 | 50 |
-
-#### Output Parameters
-None
-
-### 18. `SetInstrumentFromMarker`
-#### Description
-This method makes the selected marker frequency the particular instrument setting selected. It can also make the active marker amplitude the reference level.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Instrument Setting | Enum | Reference Level, Frequency Center, Center Frequency Step, Frequency Start, Frequency Stop | Frequency Center |
-| 4 | Active Marker | Integer | - | 1 |
-
-#### Output Parameters
-None
-
-### 19. `SetMarkerPosition`
-#### Description
-This method configures the position of the respective marker.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Marker Position | Double | - | - |
-| 4 | Marker Number | Integer | - | - |
-
-#### Output Parameters
-None
-
-### 20. `SetMarkerState`
-#### Description
-This method configures the normal marker state of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Marker Number | Integer | - | - |
-| 4 | Enable? | Boolean | true, false | - |
-
-#### Output Parameters
-None
-
-### 21. `SetMode`
-#### Description
-This method configures the mode of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Mode | Any | - | - |
-
-#### Output Parameters
-None
-
-### 22. `SetPreamp`
-#### Description
-This method configures the internal preamp state of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Preamp Settings | Enum | Disable, Enable | Disable |
-| 4 | Advanced Settings | Any | - | - |
-
-#### Output Parameters
-None
-
-### 23. `SetRFInputAttenuation`
-#### Description
-This method configures the RF input attenuation of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Auto ON? | Boolean | true, false | false |
-| 4 | Manual Attenuator Value (dB) | Double | - | - |
-
-#### Output Parameters
-None
-
-### 24. `SetSweepPoints`
-#### Description
-This method configures the sweep points of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Sweep Points | Integer | - | - |
-
-#### Output Parameters
-None
-
-### 25. `SetSweepType`
-#### Description
-This method configures the sweep type of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Sweep Type | Enum | Single, Continuous, Sweep Count | Single |
-| 4 | Sweep Count Value | Integer | - | - |
-
-#### Output Parameters
-None
-
-### 26. `SetTrace`
-#### Description
-This method configures the type of trace to be acquired.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Trace Name | Enum | Trace 1, Trace 2, Trace3, Trace 4 | Trace 1 |
-| 4 | Trace Type | Enum | Clear Write, Maximum Hold, Minimum Hold, Max/Min Hold, View, Blank, Average | Clear Write |
-| 5 | Advanced Settings | Any | - | - |
-
-#### Output Parameters
-None
-
-### 27. `SetTrigger`
-#### Description
-This method triggers the instrument at the respective timeout value.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Timeout (ms) | Double | - | - |
-
-#### Output Parameters
-None
-
-### 28. `SetVerticalScale`
-#### Description
-This method configures the vertical scale type of the spectrum analyzer.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
-| 3 | Vertical Scale | Enum | :Linear, Logarithmic, Linear %, Linear dB | Linear |
-
-#### Output Parameters
-None
-
-### 29. `StopAcquisition`
-#### Description
-This method halts any ongoing acquisition and returns the spectrum analyzer to the Idle state. It immediately stops all measurement operations and resets the analyzer to a safe state.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | Channel | String | - | - |
+| 3 | setpoint_temp | Double | - | - |
+| 4 | start_air_flow | Boolean | - | - |
 
 #### Output Parameters
 None
