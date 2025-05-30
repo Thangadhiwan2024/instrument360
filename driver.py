@@ -1,132 +1,45 @@
-import nidcpower
-from v1.instruments.smu.hal import SMU, ConnectionState
+from v1.instruments.smu.hal import SMU, ConnectionState, PulseSourceMode
+import pyvisa
 
-class NISmuController(SMU):
+class RS_NGU401(SMU):
     def __init__(self, instrument_address: str):
         super().__init__(instrument_address)
-        try:
-            self.instrument_address = instrument_address
-            self.instrument = nidcpower.Session(resource_name=self.instrument_address)
-        except Exception as e:
-            raise Exception(f"Failed to initialize session: {e}")
-
-    def Init(self, channel: str) -> None:
-        try:
-            self.instrument.initiate()
-        except Exception as e:
-            raise Exception(f"Initialization failed: {e}")
-
-    def Close(self, channel: str) -> None:
-        try:
-            self.instrument.close()
-        except Exception as e:
-            raise Exception(f"Closing session failed: {e}")
+        rm = pyvisa.ResourceManager()
+        self.instrument = rm.open_resource(instrument_address)
 
     def Abort(self, channel: str) -> None:
-        try:
-            self.instrument.abort()
-        except Exception as e:
-            raise Exception(f"Abort failed: {e}")
+        print(f"Aborting operation on channel {channel}")
+        self.instrument.write(f"ABORt")
+
+    def Close(self, channel: str) -> None:
+        self.instrument.write(f"INST:SEL {channel}; *RST")
+        self.instrument.write("SYST:LOC")
 
     def ConnectDisconnectOutput(self, channel: str, state: ConnectionState = ConnectionState.Disconnect) -> None:
-        try:
-            self.instrument.channels[channel].output_enabled = (state == ConnectionState.Connect)
-        except Exception as e:
-            raise Exception(f"Output connection toggle failed: {e}")
+        if state == ConnectionState.Connect:
+            self.instrument.write(f"OUTP {channel}, ON")
+        else:
+            self.instrument.write(f"OUTP {channel}, OFF")
 
-    def SetCurrentLevel(self, channel: str, current_level: float = 0.00001) -> None:
-        try:
-            self.instrument.channels[channel].current_level_autorange = True
-            self.instrument.channels[channel].current_level = current_level
-        except Exception as e:
-            raise Exception(f"Set current level failed: {e}")
+    def SetOverCurrentProtection(self, channel: str, enable_ocp: bool = True, over_current_protection: float = 0.1) -> None:
+        self.instrument.write(f"CURR:PROT {int(enable_ocp)}")
+        self.instrument.write(f"CURR:PROT:LEV {over_current_protection}")
 
-    def SetVoltageLevel(self, channel: str, voltage_level: float = 2) -> None:
-        try:
-            self.instrument.channels[channel].voltage_level_autorange = True
-            self.instrument.channels[channel].voltage_level = voltage_level
-        except Exception as e:
-            raise Exception(f"Set voltage level failed: {e}")
+    def SetOverVoltageProtection(self, channel: str, enable_ovp: bool = True, over_voltage_protection: float = 10) -> None:
+        self.instrument.write(f"VOLT:PROT {int(enable_ovp)}")
+        self.instrument.write(f"VOLT:PROT:LEV {over_voltage_protection}")
 
-    def SetCurrentLimit(self, channel: str, current_limit: float = 0.1) -> None:
-        try:
-            self.instrument.channels[channel].current_limit = current_limit
-        except Exception as e:
-            raise Exception(f"Set current limit failed: {e}")
+    def SetPulseSourceMode(self, channel: str, pulse_mode: PulseSourceMode = PulseSourceMode.Pulse_Voltage) -> None:
+        if pulse_mode == PulseSourceMode.Pulse_Voltage:
+            self.instrument.write(f"SOUR{channel}:FUNC:MODE VOLT")
+        elif pulse_mode == PulseSourceMode.Pulse_Current:
+            self.instrument.write(f"SOUR{channel}:FUNC:MODE CURR")
 
-    def SetVoltageLimit(self, channel: str, voltage_limit: float = 2) -> None:
-        try:
-            self.instrument.channels[channel].voltage_limit = voltage_limit
-        except Exception as e:
-            raise Exception(f"Set voltage limit failed: {e}")
-
-    def GetCurrentMeasurement(self, channel: str):
-        try:
-            return [self.instrument.channels[channel].measure(nidcpower.MeasurementTypes.CURRENT)]
-        except Exception as e:
-            raise Exception(f"Current measurement failed: {e}")
-
-    def GetVoltageMeasurement(self, channel: str):
-        try:
-            return [self.instrument.channels[channel].measure(nidcpower.MeasurementTypes.VOLTAGE)]
-        except Exception as e:
-            raise Exception(f"Voltage measurement failed: {e}")
-
-
-    def Reset(self, channel: str) -> None:
-        try:
-            self.instrument.reset()
-        except Exception as e:
-            raise Exception(f"Device reset failed: {e}")
-
-
-
-import time
-
-# === CONFIGURATION ===
-instrument_address = "PXI1Slot5"  # Replace with your actual SMU resource string
-channel = "1"  # Replace with your actual channel name (e.g., "0", "1")
-
-# === SETUP & RUN ===
-if __name__ == "__main__":
-    try:
-        smu = NISmuController(instrument_address)
-
-        # # Set source mode to VOLTAGE
-        smu.SetSourceMode(channel, "DC_VOLTAGE")
-        time.sleep(10)
-
-        # # Set voltage level to 0.5 V and configure limit
-        # smu.SetVoltageLevel(channel, voltage_level=0.5)
-        # smu.SetCurrentLimit(channel, current_limit=0.01)  # Optional: current limit
-
-        # # Enable output
-        # smu.ConnectDisconnectOutput(channel, state=ConnectionState.Connect)
-
-        # # Initialize the session
-
-
-        # Optional: Read back measurements
-        # voltage = smu.GetVoltageMeasurement(channel)
-        # current = smu.GetCurrentMeasurement(channel)
-        # print(f"Voltage Measured: {voltage}")
-        # print(f"Current Measured: {current}")
-
-        # # Stop sourcing
-        # smu.Abort(channel)
-        smu.SetSourceMode(channel, "DC_CURRENT")
-        smu.Init(channel)
-
-        # print(f"Sourcing 0.5 V on channel {channel} for 10 seconds...")
-        time.sleep(10)
-        # print(f"Output toggled on channel {channel}")
-        # smu.ConnectDisconnectOutput(channel, state=ConnectionState.Disconnect)
-
-    except Exception as e:
-        print(f"Error during SMU operation: {e}")
-    finally:
-        try:
-            smu.Close(channel)
-        except:
-            pass
-
+    def SetPulseTimings(self, channel: str, pulse_period: float = 50, pulse_width: float = 25) -> None:
+        if not 50e-6 <= pulse_period <= 100000:
+            raise ValueError("Pulse period must be between 50 μs and 100000 s.")
+        if not 50e-6 <= pulse_width <= 100000:
+            raise ValueError("Pulse width must be between 50 μs and 100000 s.")
+        
+        self.instrument.write(f"CHANnel{channel}:PULSe:PERiod {pulse_period}")
+        self.instrument.write(f"CHANnel{channel}:PULSe:WIDth {pulse_width}")
