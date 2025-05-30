@@ -1,88 +1,145 @@
 from enum import Enum
-from typing import Any, Optional
+from typing import List, Any
 
-class Function(Enum):
-    DC_VOLTS = "DC Volts"
-    AC_VOLTS = "AC Volts"
-    DC_CURRENT = "DC Current"
-    AC_CURRENT = "AC Current"
-    DIODE = "Diode"
-    POWER_METER = "Power Meter"
-    CAPACITANCE = "Capacitance"
-    TEMPERATURE = "Temperature"
-    FREQUENCY = "Frequency"
-    TWO_WIRE_RESISTANCE = "2-Wire Resistance"
-    FOUR_WIRE_RESISTANCE = "4 Wire Resistance"
-
-class Display(Enum):
-    ON = "ON"
-    OFF = "OFF"
-
-class Operation(Enum):
-    CREATE_NEW_SESSION = "Create New Session"
-    FETCH_EXISTING_SESSION = "Fetch Existing Session"
-    CLOSE_AND_DESTROY = "Close & Destroy"
+class OperationMode(str, Enum):
+    CLOSE_DESTROY = "Close & Destroy"
     DESTROY_DONT_CLOSE = "Destroy & Don't Close"
 
-class TriggerSource(Enum):
-    AUTO = "Auto"
-    IMMEDIATE = "Immediate"
+class TriggerSource(str, Enum):
+    INTERNAL = "Internal"
     EXTERNAL = "External"
     MANUAL = "Manual"
-    BUS_SOURCE = "Bus/Source"
 
-class Resolution(Enum):
-    THREE_HALF = "3 1/2"
-    FOUR_HALF = "4 1/2"
-    FIVE_HALF = "5 1/2"
-    SIX_HALF = "6 1/2"
-    SEVEN_HALF = "7 1/2"
-    EIGHT_HALF = "8 1/2"
+class BurstMode(str, Enum):
+    TRIGGERED = "Triggered"
+    GATED = "Gated"
 
-class DMM:
+class GatePolarity(str, Enum):
+    NORMAL = "Normal"
+    INVERTED = "Inverted"
+
+class PulseDelayUnit(str, Enum):
+    SECONDS = "Seconds"
+    RADIANS = "Radians"
+    PERCENT = "Percent"
+    DEGREE = "Degree"
+
+class Waveform(str, Enum):
+    SINE = "Sine"
+    SQUARE = "Square"
+    RAMP_UP = "Ramp Up"
+    DC = "DC"
+    NOISE = "Noise"
+    TRIANGLE = "Triangle"
+    PULSE = "Pulse"
+    RAMP_DOWN = "Ramp Down"
+    RAMP = "Ramp"
+
+class TrackMode(str, Enum):
+    ON = "ON"
+    OFF = "OFF"
+    INVERT = "Invert"
+
+class SourceChannel(str, Enum):
+    CHANNEL_1 = "1"
+    CHANNEL_2 = "2"
+
+class TriggerSlope(str, Enum):
+    POSITIVE = "Positive"
+    NEGATIVE = "Negative"
+
+class FGEN:
     def __init__(self, instrument_address: str):
         self.instrument_address = instrument_address
 
-    def StopMeasurement(self, Instrument_Address: str, Channel: str = "") -> None:
-        """Stops the previously initiated measurement."""
+    def Abort(self, instrument_address: str, channel: str) -> None:
+        """Stops the current operation on the specified channel(s)."""
         pass
 
-    def TerminateSession(self, Instrument_Address: str, Channel: str = "", operation: Operation = Operation.CLOSE_AND_DESTROY) -> None:
-        """Terminates the instrument session."""
+    def Close(self, instrument_address: str, channel: str, operation: OperationMode = OperationMode.CLOSE_DESTROY) -> None:
+        """Terminates the instrument session for the specified channel(s)."""
         pass
 
-    def SetNPLC(self, Instrument_Address: str, Channel: str = "", Function: Function = Function.DC_VOLTS, NPLC: float = 0.02) -> None:
-        """Configures the number of Power Line Cycles (NPLC)."""
+    def ConfigureBurstMode(self, instrument_address: str, channel: str, enable_burst_mode: bool = False, burst_phase: float = 0.0, burst_cycle: int = 1, burst_period: float = 0.0, trigger_source: TriggerSource = TriggerSource.INTERNAL, additional_input: Any = "", burst_mode: BurstMode = BurstMode.TRIGGERED, gate_polarity: GatePolarity = GatePolarity.NORMAL) -> None:
+        """Sets up burst modulation for the specified channel(s)."""
         pass
 
-    def ConfigureMeasurement(self, Instrument_Address: str, Channel: str = "", Resolution_in_digits: Resolution = Resolution.EIGHT_HALF, Function: Function = Function.DC_VOLTS, Range: float = 0.02, Additional_info: Optional[Any] = None) -> None:
-        """Sets up the measurement function, range, and resolution."""
+    def SetHighLowLevel(self, instrument_address: str, channel: str, value_high_in_v: float = 0.5, value_low_in_v: float = -0.5) -> None:
+        """Configures the high-level and low-level of the output signal."""
         pass
 
-    def ToggleDisplay(self, Instrument_Address: str, Channel: str = "", Display: Display = Display.ON) -> None:
-        """Enables or disables the display on the DMM."""
+    def SetOutputPolarity(self, instrument_address: str, channel: str, output_polarity: str = "Normal") -> None:
+        """Inverts the waveform relative to the offset voltage."""
         pass
 
-    def SetupMultiPointTrigger(self, Instrument_Address: str, Channel: str = "", Trigger_Source: TriggerSource = TriggerSource.IMMEDIATE, Trigger_Count: int = 1, Sample_Count: int = 1, Sample_Interval: int = 0) -> None:
-        """Configures the trigger source and counts for multipoint measurements."""
+    def SetPulseDelay(self, instrument_address: str, channel: str, pulse_delay_unit: PulseDelayUnit = PulseDelayUnit.SECONDS, pulse_delay_value: float = 0.0) -> None:
+        """Configures the pulse delay value and unit."""
         pass
 
-    def InitializeSession(self, Instrument_Address: str, Channel: str = "", Operation: Operation = Operation.CREATE_NEW_SESSION) -> None:
-        """Initializes the session of the DMM."""
+    def SetPulseDutyCycle(self, instrument_address: str, channel: str, duty_cycle: float = 50.00) -> None:
+        """Configures the Duty Cycle of the Pulse waveform."""
         pass
 
-    def StartMeasurement(self, Instrument_Address: str, Channel: str = "") -> None:
-        """Starts the DMM for measurements."""
+    def ConfigurePulseWaveform(self, instrument_address: str, channel: str, leading_edge_time: float = 5E-9, trailing_edge_time: float = 5E-9, pulse_width: float = 0.0001, pulse_period: float = 0.001) -> None:
+        """Sets up the parameters for the pulse waveform."""
         pass
 
-    def ReadMultipleMeasurements(self, Instrument_Address: str, Channel: str = "") -> None:
-        """Reads multiple measurements equal to the entered sample count."""
+    def SetRampWaveform(self, instrument_address: str, channel: str, percentage: float = 100.0) -> None:
+        """Configures the Symmetry of the Ramp waveform."""
         pass
 
-    def ReadSingleMeasurement(self, Instrument_Address: str, Channel: str = "") -> None:
-        """Reads a single measurement."""
+    def SetSquareWaveform(self, instrument_address: str, channel: str, duty_cycle: float = 50.00) -> None:
+        """Configures the Duty Cycle of the Square waveform."""
         pass
 
-    def RestoreDefaults(self, Instrument_Address: str, Channel: str = "") -> None:
-        """Restores the DMM to its default settings."""
+    def SetStandardWaveform(self, instrument_address: str, channel: str, dc_offset: float = 0.0, frequency: float = 1000, start_phase: float = 0.0, waveform: Waveform = Waveform.SINE, amplitude: float = 0.10, additional_input: Any = "") -> None:
+        """Configures the waveform shape for the specified channel(s)."""
+        pass
+
+    def ConfigureFrequencySweep(self, instrument_address: str, channel: str, power_array: List[float] = [], dwell_time_array: List[float] = [0.002], frequency_array: List[float] = [1000]) -> None:
+        """Sets up the Frequency Sweep for the specified channel(s)."""
+        pass
+
+    def ConfigureChannelTracking(self, instrument_address: str, channel: str, track_mode: TrackMode = TrackMode.ON, source_channel: SourceChannel = SourceChannel.CHANNEL_1) -> None:
+        """Sets up tracking mode for channels."""
+        pass
+
+    def SetTriggerSlope(self, instrument_address: str, channel: str, trigger_slope: TriggerSlope = TriggerSlope.POSITIVE) -> None:
+        """Configures the polarity of the External Trigger terminal."""
+        pass
+
+    def SetTriggerSource(self, instrument_address: str, channel: str, trigger_source: TriggerSource = TriggerSource.SOFTWARE) -> None:
+        """Configures the Trigger Source for the specified channel(s)."""
+        pass
+
+    def DisableChannelOutput(self, instrument_address: str, channel: str) -> None:
+        """Turns off the output of the specified channel(s)."""
+        pass
+
+    def EnableChannelOutput(self, instrument_address: str, channel: str) -> None:
+        """Turns on the output of the specified channel(s)."""
+        pass
+
+    def Init(self, instrument_address: str, channel: str, fgen_type: str = "", operation: OperationMode = OperationMode.CLOSE_DESTROY) -> None:
+        """Starts the session of the Function Generator."""
+        pass
+
+    def Initiate(self, instrument_address: str, channel: str) -> None:
+        """Begins the specified channel(s) of the Function Generator."""
+        pass
+
+    def Reset(self, instrument_address: str, channel: str) -> None:
+        """Resets the specified Function Generator."""
+        pass
+
+    def SendSoftwareTrigger(self, instrument_address: str, channel: str) -> None:
+        """Sends a software trigger to the specified Function Generator."""
+        pass
+
+    def SetLoadImpedance(self, instrument_address: str, channel: str, load_impedance: float = 50.0) -> None:
+        """Configures the load impedance for the specified channel(s)."""
+        pass
+
+    def SetOutputImpedance(self, instrument_address: str, channel: str, impedance: float = 50.0) -> None:
+        """Configures the output impedance for the specified channel(s)."""
         pass
