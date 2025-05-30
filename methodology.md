@@ -1,583 +1,505 @@
-# Source Measure Unit (SMU)
+# Spectrum Analyzer
 
-A **Source Measure Unit (SMU)** is a highly accurate instrument that combines **sourcing** and **measuring** capabilities into one device. It is widely used for testing semiconductors, characterizing components, and analyzing materials.
+A **Spectrum Analyzer** is an essential electronic instrument used to measure and visualize the frequency spectrum of signals. It provides insights into signal strength, noise, and distortion across a specified frequency range, making it indispensable for RF and communication system analysis.
 
 ---
 
 ## **Key Features**
 
-### **Precision Sourcing**
-- Provides accurate voltage or current to the **Device Under Test (DUT)**.
-- Ensures stability and minimal noise during sourcing.
+### **Wide Frequency Range**
+- Analyzes signals across a broad range of frequencies.
+- Capable of detecting signals from a few Hz to several GHz.
 
-### **Four-Quadrant Operation**
-- **Quadrant I:** Sourcing voltage and sourcing current.
-- **Quadrant II:** Sourcing voltage and sinking current.
-- **Quadrant III:** Sinking voltage and sinking current.
-- **Quadrant IV:** Sinking voltage and sourcing current.
+### **High Resolution and Sensitivity**
+- Offers fine frequency resolution to distinguish closely spaced signals.
+- Detects low-level signals with high sensitivity.
+
+### **Real-Time Spectrum Analysis**
+- Continuously monitors and captures transient signals.
+- Provides real-time visualization of signal behavior.
 
 ---
 
 ## **Applications**
-### **Semiconductor Testing**
-- Evaluates I-V characteristics of transistors, diodes, and other semiconductor devices.
-- Measures leakage current and threshold voltage with high precision.
 
-### **Component Characterization**
-- Analyzes passive and active components, such as resistors, capacitors, and inductors.
-- Validates component performance under various operating conditions.
+### **RF and Wireless Communication Testing**
+- Evaluates signal quality, bandwidth, and modulation accuracy.
+- Identifies interference sources in wireless networks.
 
-### **Material Analysis**
-- Assesses electrical properties of materials by measuring resistivity and conductivity.
-- Conducts leakage and breakdown voltage tests.
+### **EMI/EMC Testing**
+- Detects and analyzes electromagnetic interference (EMI) in electronic systems.
+- Ensures compliance with electromagnetic compatibility (EMC) standards.
+
+### **Antenna and Transmitter Characterization**
+- Measures antenna radiation patterns and transmission performance.
+- Verifies transmitter output power, harmonic distortion, and spurious emissions.
+
+### **Audio and Video Signal Analysis**
+- Analyzes frequency content of audio and video signals.
+- Identifies noise, distortion, and unwanted signal artifacts.
 
 ---
 
 ## **Advantages**
-### **High Accuracy and Stability**
-- Ensures precise control over source and measurement parameters.
-- Minimizes errors and noise for sensitive applications.
 
-### **Simplified Test Setup**
-- Combines source and measurement functions into one instrument.
-- Reduces complexity and improves test efficiency.
+### **Accurate Signal Visualization**
+- Displays amplitude vs. frequency for detailed signal analysis.
+- Identifies anomalies and unwanted frequency components.
 
-### **Automation and Integration**
-- Supports integration with automated test systems.
-- Enables consistent and efficient test execution.
+### **Versatility and Flexibility**
+- Supports a variety of input signals, including analog and digital.
+- Suitable for laboratory, field, and production environments.
+
+### **Advanced Signal Processing**
+- Applies digital filtering and demodulation techniques for enhanced analysis.
+- Provides actionable insights through intuitive data presentation.
 
 ---
 
 ## **Abstract Methods**
 ---
 
-### 1. `Abort`
+### 1. `AlignAll`
 #### Description
-Terminates the session for the SMU by halting any ongoing operations and resetting the session to a safe state.
+This method performs a complete alignment of the instrument and returns the alignment status. It ensures optimal performance by calibrating internal components.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
+| 2 | Channel | String | - | - |
 
 #### Output Parameters
-None
+| S.No | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | alignment_status | Boolean |
 
 ### 2. `Close`
 #### Description
-Ends the session for the SMU by releasing the communication channel and freeing resources.
+This method is used to close the instrument session of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Operation | Enum | Close & Destroy, Destroy & Don't Close | Close & Destroy |
 
 #### Output Parameters
 None
 
-### 3. `ConnectDisconnectOutput`
+### 3. `Get Amplitude at Selected Frequency`
 #### Description
-Connects or disconnects the output of the specified SMU channel.
+Return the amplitude of selected marker at given frequency.
+
+**Note:** Marker type is set to position(normal).
+
+#### Input Parameters
+| No. | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Active Marker | Integer | - | - |
+| 4 | Frequency (Hz) | Double | - | - |
+
+#### Output Parameters
+| No. | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Amplitude | Double |
+
+### 4. `Get Marker Positions`
+#### Description
+Retrieves the position and amplitude for a specified marker.
+
+#### Input Parameters
+| No. | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Marker Number | Integer | - | - |
+
+#### Output Parameters
+| No. | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Position | Double |
+| 2 | Amplitude | Double |
+
+### 5. `Get Sweep Points`
+#### Description
+Returns the configured sweep points of the spectrum analyzer.
+
+#### Input Parameters
+| No. | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+| No. | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Sweep Points | Integer |
+
+### 6. `Get Sweep Time`
+#### Description
+Returns the configured sweep time of the instrument.
+
+#### Input Parameters
+| No. | Parameter | Type | Options | Default |
+|:--:|:----------|:-----|:--------|:--------|
+| 1 | Instrument Address | String | - | - |
+| 2 | Channel | String | - | - |
+
+#### Output Parameters
+| No. | Parameter | Type |
+|:--:|:----------|:-----|
+| 1 | Sweep Time | Double |
+
+### 7. `Init`
+#### Description
+This method initializes the session of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | state | enum | Connect, Disconnect | Disconnect |
+|:--:|:----------|:----:|:--------|:--------|
+| 1 | Type | String | - | - |
+| 2 | Use Pre-Amp? | Boolean | true, false | - |
+| 3 | Operation | Enum U16 | Create New Session | - |
 
 #### Output Parameters
 None
 
-### 4. `SetOverCurrentProtection`
+### 8. `LoadConfigFile`
 #### Description
-Configures over-current protection (OCP) for the specified channel by enabling or disabling protection and setting the maximum allowable current limit.
+This method loads the instrument configuration from the selected file.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | enable_ocp | bool | True, False | True |
-| 4 | over_current_protection | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Selected Configuration | File Path | - | - |
 
 #### Output Parameters
 None
 
-### 5. `SetOverVoltageProtection`
+### 9. `ReadTraceData`
 #### Description
-Configures over-voltage protection (OVP) for the specified channel by enabling or disabling protection and setting the maximum allowable voltage limit.
+This method reads trace data from the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | enable_ovp | bool | True, False | True |
-| 4 | over_voltage_protection | float | - | 10V |
-
-#### Output Parameters
-None
-
-### 6. `SetPulseSourceMode`
-#### Description
-Configures the pulse source mode for the specified channel to control how pulses are generated.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_mode | enum | Pulse Voltage, Pulse Current | Pulse Voltage |
-
-#### Output Parameters
-None
-
-### 7. `SetPulseTimings`
-#### Description
-Configures the pulse period and pulse width for the specified channel to define the timing of pulse generation.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_period | float | - | 50ms |
-| 4 | pulse_width | float | - | 25ms |
-
-#### Output Parameters
-None
-
-### 8. `SetSenseMode`
-#### Description
-Configures the sense mode for the specified channel to measure voltage or current either at the source (local) or at the load (remote).
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | sense | enum | Local, Remote | Local |
-
-#### Output Parameters
-None
-
-### 9. `SetSourceMode`
-#### Description
-Configures the source mode for the specified channel to either control voltage or current.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | dc_source_mode | enum | Voltage, Current | Voltage |
-
-#### Output Parameters
-None
-
-### 10. `SetSourceDelay`
-#### Description
-Sets the source delay time for the specified channel to introduce a delay before enabling the output.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | enable_source_delay | bool | True, False | False |
-| 4 | source_delay | float | - | 0.1 |
-
-#### Output Parameters
-None
-
-### 11. `ToggleOutputState`
-#### Description
-Enables or disables the output for the specified channel to control power delivery.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | state | bool | True, False | True |
-
-#### Output Parameters
-None
-
-### 12. `Init`
-#### Description
-Initializes the session for the SMU by establishing communication and preparing the device for further commands.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-
-#### Output Parameters
-None
-
-### 13. `Initiate`
-#### Description
-Initiates the session for the specified channel, preparing it to begin operations such as measurements or output delivery.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-
-#### Output Parameters
-None
-
-### 14. `GetCurrentMeasurement`
-#### Description
-Measures and returns the current for the specified channel. This function retrieves the instantaneous current flowing through the circuit or device connected to the SMU (Source Measure Unit).
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Trace Name | Enum | Trace 1, Trace 2, Trace3, Trace 4 | Trace 1 |
+| 4 | Maximum Time | Double | - | - |
 
 #### Output Parameters
 | S.No | Parameter | Type |
 |:--:|:----------|:-----|
-| 1 | current | array |
+| 1 | Initial X | Double |
+| 2 | X Increment | Double |
+| 3 | Y Array | 1D-Array |
 
-### 15. `GetVoltageMeasurement`
+### 10. `SetActiveWindow`
 #### Description
-Measures and returns the voltage for the specified channel. This function captures the voltage across the connected circuit or device with high precision.
+This method configures the active window of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-
-#### Output Parameters
-| S.No | Parameter | Type |
-|:--:|:----------|:-----|
-| 1 | voltage | array |
-
-### 16. `Reset`
-#### Description
-Resets the instrument settings to the factory or default state. It terminates any ongoing operations and restores the initial configurations, ensuring a clean state before performing subsequent tasks.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
+| 2 | Channel | String | - | - |
+| 3 | Window | Integer | - | - |
 
 #### Output Parameters
 None
 
-### 17. `SetCurrentParameters`
+### 11. `SetAmplitudeLevel`
 #### Description
-Configures the current level and voltage limit for the specified channel. It defines the target current and associated safety limits to protect the circuit while sourcing current.
+Configures the amplitude (vertical) settings of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | current_level | float | - | 0.1A |
-| 4 | voltage_limit | float | - | 2V |
-| 5 | current_level_range | float | - | 0.1A |
-| 6 | voltage_limit_range | float | - | 6V |
-| 7 | source_delay | float | - | 0.1 |
+| 2 | Channel | String | - | - |
+| 3 | Reference Level | Double | - | - |
+| 4 | Reference Offset | Double | - | - |
+| 5 | Units | String | - | - |
+| 6 | Attenuation Level | Double | - | - |
+| 7 | Auto Attenuation? | Boolean | - | - |
+| 8 | Amplitude Scale | String | - | - |
+| 9 | Advanced Settings | Any | - | - |
 
 #### Output Parameters
 None
 
-### 18. `SetCurrentLimit`
+### 12. `SetAveragingWithTrace`
 #### Description
-Sets the maximum allowable current for the specified channel. This function establishes a protection limit, preventing the channel from sourcing excessive current that could damage the connected device.
+This method configures the averaging settings of the spectrum analyzer along with trace-specific parameters.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | current_limit | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Average Count | I32 | - | - |
+| 4 | Enable Averaging? | Boolean | true, false | - |
+| 5 | Averaging Type | Any | - | - |
+| 6 | Advanced Settings | Any | - | - |
+| 7 | Trace Name | Enum U16 | - | - |
 
 #### Output Parameters
 None
 
-### 19. `SetCurrentLimitRange`
+### 13. `SetBandwidthResolution`
 #### Description
-Defines the permissible range for the current limit and optionally enables auto-ranging for dynamic range adjustment based on load requirements.
+This method configures the coupling and sweeping properties of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | current_limit_range | float | - | 0.1A |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Manual Resolution BW | Double | - | - |
+| 4 | Enable Auto Resolution BW? | Boolean | true, false |- |
+| 5 | Enable Auto Video BW? | Boolean |true, false | - |
+| 6 | Manual Video BW (Hz) | Double | - | - |
+| 7 | Advanced Settings | Any | - | - |
 
 #### Output Parameters
 None
 
-### 20. `SetCurrentLevel`
+### 14. `SetDeltaMarker`
 #### Description
-Configures the desired current level for the specified channel. This function precisely sets the current that the channel will source to the connected device.
+This method configures the delta marker state of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | current_level | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Delta Marker Number | Integer | - | - |
+| 4 | Enable? | Boolean | - | - |
 
 #### Output Parameters
 None
 
-### 21. `SetCurrentRange`
+### 15. `SetFFTWindow`
 #### Description
-Sets the permissible range for the current level and optionally enables auto-ranging to adjust the range dynamically.
+This method configures the FFT window type of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | current_level_range | float | - | 0.1A |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Windowing Type | Any | - | - |
 
 #### Output Parameters
 None
 
-### 22. `SetVoltageLimit`
+### 16. `SetInputCoupling`
 #### Description
-Sets the maximum allowable voltage for the specified channel, ensuring that the applied voltage does not exceed a safe threshold.
+This method configures the coupling type at the analyzer RF input port.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | voltage_limit | float | - | 2V |
+| 2 | Channel | String | - | - |
+| 3 | Input Coupling | Enum | AC, DC | AC |
+| 4 | Advanced Settings | Any | - | - |
 
 #### Output Parameters
 None
 
-### 23. `SetVoltageLimitRange`
+### 17. `SetInputImpedance`
 #### Description
-Defines the permissible range for the voltage limit and enables auto-ranging for automatic adjustment of the range.
+This method configures the input impedance of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | voltage_limit_range | float | - | 6V |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Input Impedance (Ohm) | Enum | 50, 75 | 50 |
 
 #### Output Parameters
 None
 
-### 24. `SetVoltageLevel`
+### 18. `SetInstrumentFromMarker`
 #### Description
-Configures the desired voltage level for the specified channel. This function ensures accurate voltage sourcing to the connected circuit.
+This method makes the selected marker frequency the particular instrument setting selected. It can also make the active marker amplitude the reference level.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | voltage_level | float | - | 2V |
+| 2 | Channel | String | - | - |
+| 3 | Instrument Setting | Enum | Reference Level, Frequency Center, Center Frequency Step, Frequency Start, Frequency Stop | Frequency Center |
+| 4 | Active Marker | Integer | - | 1 |
 
 #### Output Parameters
 None
 
-### 25. `SetVoltageRange`
+### 19. `SetMarkerPosition`
 #### Description
-Sets the voltage range with optional auto-ranging to dynamically adjust the range depending on load requirements.
+This method configures the position of the respective marker.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | voltage_level_range | float | - | 6V |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Marker Position | Double | - | - |
+| 4 | Marker Number | Integer | - | - |
 
 #### Output Parameters
 None
 
-### 26. `SetPulseBaseCurrentLimit`
+### 20. `SetMarkerState`
 #### Description
-Configures the limit for the pulse base current to ensure safe operation during pulse generation.
+This method configures the normal marker state of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_limit | float | - | 10mA |
+| 2 | Channel | String | - | - |
+| 3 | Marker Number | Integer | - | - |
+| 4 | Enable? | Boolean | true, false | - |
 
 #### Output Parameters
 None
 
-### 27. `SetPulseBaseCurrentLevel`
+### 21. `SetMode`
 #### Description
-Sets the desired pulse base current level for the specified channel, ensuring that pulse operations are performed with the correct parameters.
+This method configures the mode of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_level | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Mode | Any | - | - |
 
 #### Output Parameters
 None
 
-### 28. `SetPulseBaseVoltageLimit`
+### 22. `SetPreamp`
 #### Description
-Configures the maximum allowable voltage limit for the pulse base operation, preventing excessive voltage from being applied.
+This method configures the internal preamp state of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_limit | float | - | 0.1V |
+| 2 | Channel | String | - | - |
+| 3 | Preamp Settings | Enum | Disable, Enable | Disable |
+| 4 | Advanced Settings | Any | - | - |
 
 #### Output Parameters
 None
 
-### 29. `SetPulseBaseVoltageLevel`
+### 23. `SetRFInputAttenuation`
 #### Description
-Sets the desired pulse base voltage level for the specified channel, ensuring that the pulse voltage meets operational requirements.
+This method configures the RF input attenuation of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_level | float | - | 0.2V |
+| 2 | Channel | String | - | - |
+| 3 | Auto ON? | Boolean | true, false | false |
+| 4 | Manual Attenuator Value (dB) | Double | - | - |
 
 #### Output Parameters
 None
 
-### 30. `SetPulseCurrentLimit`
+### 24. `SetSweepPoints`
 #### Description
-Sets the pulse current limit for the specified channel to ensure the current does not exceed the defined threshold during pulse operations. This protects the device under test (DUT) from excessive current that could cause damage.
+This method configures the sweep points of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_limit | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Sweep Points | Integer | - | - |
 
 #### Output Parameters
 None
 
-### 31. `SetPulseCurrentLimitRange`
+### 25. `SetSweepType`
 #### Description
-Sets the pulse current limit range for the specified channel, allowing flexibility in defining the allowable range for pulse current limits. When auto-range is enabled, the system dynamically adjusts the range for optimal performance.
+This method configures the sweep type of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_limit_range | float | - | 0.1A |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Sweep Type | Enum | Single, Continuous, Sweep Count | Single |
+| 4 | Sweep Count Value | Integer | - | - |
 
 #### Output Parameters
 None
 
-### 32. `SetPulseCurrentLevel`
+### 26. `SetTrace`
 #### Description
-Sets the pulse current level for the specified channel, determining the desired magnitude of pulse current that should be applied to the DUT during operations.
+This method configures the type of trace to be acquired.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_level | float | - | 0.1A |
+| 2 | Channel | String | - | - |
+| 3 | Trace Name | Enum | Trace 1, Trace 2, Trace3, Trace 4 | Trace 1 |
+| 4 | Trace Type | Enum | Clear Write, Maximum Hold, Minimum Hold, Max/Min Hold, View, Blank, Average | Clear Write |
+| 5 | Advanced Settings | Any | - | - |
 
 #### Output Parameters
 None
 
-### 33. `SetPulseCurrentLevelRange`
+### 27. `SetTrigger`
 #### Description
-Sets the pulse current level range for the specified channel to define the allowable range within which the pulse current level can be set. When auto-range is enabled, the system adjusts the range based on varying conditions.
+This method triggers the instrument at the respective timeout value.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_current_level_range | float | - | - |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
+| 3 | Timeout (ms) | Double | - | - |
 
 #### Output Parameters
 None
 
-### 34. `SetPulseVoltageLimit`
+### 28. `SetVerticalScale`
 #### Description
-Sets the pulse voltage limit for the specified channel, ensuring that the voltage applied during pulse operations does not exceed the defined threshold, protecting the DUT from excessive voltage.
+This method configures the vertical scale type of the spectrum analyzer.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_limit | float | - | 3V |
+| 2 | Channel | String | - | - |
+| 3 | Vertical Scale | Enum | :Linear, Logarithmic, Linear %, Linear dB | Linear |
 
 #### Output Parameters
 None
 
-### 35. `SetPulseVoltageLimitRange`
+### 29. `StopAcquisition`
 #### Description
-Sets the pulse voltage limit range for the specified channel, allowing the definition of a permissible range for pulse voltage limits. When auto-range is enabled, the system dynamically adapts the range for optimal voltage control.
+This method halts any ongoing acquisition and returns the spectrum analyzer to the Idle state. It immediately stops all measurement operations and resets the analyzer to a safe state.
 
 #### Input Parameters
 | S.No | Parameter | Type | Options | Default |
 |:--:|:----------|:-----|:--------|:--------|
 | 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_limit_range | float | - | 3V |
-| 4 | auto_range | bool | True, False | False |
+| 2 | Channel | String | - | - |
 
 #### Output Parameters
 None
-
-### 36. `SetPulseVoltageLevel`
-#### Description
-Sets the pulse voltage level for the specified channel, specifying the desired voltage to be applied during pulse operations. This value determines the voltage intensity delivered to the DUT.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_level | float | - | 1V |
-
-#### Output Parameters
-None
-
-### 37. `SetPulseVoltageLevelRange`
-#### Description
-Sets the pulse voltage level range for the specified channel, defining the acceptable range within which the pulse voltage level can be set. When auto-range is enabled, the system dynamically adjusts the range based on varying conditions.
-
-#### Input Parameters
-| S.No | Parameter | Type | Options | Default |
-|:--:|:----------|:-----|:--------|:--------|
-| 1 | Instrument Address | String | - | - |
-| 2 | channel | String | - | - |
-| 3 | pulse_voltage_level_range | float | - | 3V |
-| 4 | auto_range | bool | True, False | False |
-
-#### Output Parameters
-None
