@@ -1,153 +1,247 @@
+from typing import List, Optional, Any
 from pydantic import BaseModel
-from typing import Optional, Any
-from enum import Enum
 
-class Function(Enum):
-    DC_VOLTS = "DC Volts"
-    AC_VOLTS = "AC Volts"
-    DC_CURRENT = "DC Current"
-    AC_CURRENT = "AC Current"
-    DIODE = "Diode"
-    POWER_METER = "Power Meter"
-    CAPACITANCE = "Capacitance"
-    TEMPERATURE = "Temperature"
-    FREQUENCY = "Frequency"
-    TWO_WIRE_RESISTANCE = "2-Wire Resistance"
-    FOUR_WIRE_RESISTANCE = "4 Wire Resistance"
-
-class Display(Enum):
-    ON = "ON"
-    OFF = "OFF"
-
-class Operation(Enum):
-    CREATE_NEW_SESSION = "Create New Session"
-    FETCH_EXISTING_SESSION = "Fetch Existing Session"
-    CLOSE_AND_DESTROY = "Close & Destroy"
-    DESTROY_DONT_CLOSE = "Destroy & Don't Close"
-
-class TriggerSource(Enum):
-    AUTO = "Auto"
-    IMMEDIATE = "Immediate"
-    EXTERNAL = "External"
-    MANUAL = "Manual"
-    BUS_SOURCE = "Bus/Source"
-
-class Resolution(Enum):
-    THREE_HALF = "3 1/2"
-    FOUR_HALF = "4 1/2"
-    FIVE_HALF = "5 1/2"
-    SIX_HALF = "6 1/2"
-    SEVEN_HALF = "7 1/2"
-    EIGHT_HALF = "8 1/2"
-
-class StopMeasurementRequest(BaseModel):
+class AbortRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
+    channel: str
 
-class StopMeasurementResponse(BaseModel):
+class AbortResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class TerminateSessionRequest(BaseModel):
+class CloseRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    operation: Operation
+    channel: str
+    operation: OperationMode
 
-class TerminateSessionResponse(BaseModel):
+class CloseResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class SetNPLCRequest(BaseModel):
+class ConfigureBurstModeRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    Function: Function
-    NPLC: float = 0.02
+    channel: str
+    enable_burst_mode: bool
+    burst_phase: float
+    burst_cycle: int
+    burst_period: float
+    trigger_source: TriggerSource
+    additional_input: Any
+    burst_mode: BurstMode
+    gate_polarity: GatePolarity
 
-class SetNPLCResponse(BaseModel):
+class ConfigureBurstModeResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class ConfigureMeasurementRequest(BaseModel):
+class SetHighLowLevelRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    Resolution_in_digits: Resolution
-    Function: Function
-    Range: float = 0.02
-    Additional_info: Optional[Any] = None
+    channel: str
+    value_high_in_v: float
+    value_low_in_v: float
 
-class ConfigureMeasurementResponse(BaseModel):
+class SetHighLowLevelResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class ToggleDisplayRequest(BaseModel):
+class SetOutputPolarityRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    Display: Display
+    channel: str
+    output_polarity: str
 
-class ToggleDisplayResponse(BaseModel):
+class SetOutputPolarityResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class SetupMultiPointTriggerRequest(BaseModel):
+class SetPulseDelayRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    Trigger_Source: TriggerSource
-    Trigger_Count: int = 1
-    Sample_Count: int = 1
-    Sample_Interval: int = 0
+    channel: str
+    pulse_delay_unit: PulseDelayUnit
+    pulse_delay_value: float
 
-class SetupMultiPointTriggerResponse(BaseModel):
+class SetPulseDelayResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class InitializeSessionRequest(BaseModel):
+class SetPulseDutyCycleRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
-    Operation: Operation
+    channel: str
+    duty_cycle: float
 
-class InitializeSessionResponse(BaseModel):
+class SetPulseDutyCycleResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class StartMeasurementRequest(BaseModel):
+class ConfigurePulseWaveformRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
+    channel: str
+    leading_edge_time: float
+    trailing_edge_time: float
+    pulse_width: float
+    pulse_period: float
 
-class StartMeasurementResponse(BaseModel):
+class ConfigurePulseWaveformResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class ReadMultipleMeasurementsRequest(BaseModel):
+class SetRampWaveformRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
+    channel: str
+    percentage: float
 
-class ReadMultipleMeasurementsResponse(BaseModel):
+class SetRampWaveformResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class ReadSingleMeasurementRequest(BaseModel):
+class SetSquareWaveformRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
+    channel: str
+    duty_cycle: float
 
-class ReadSingleMeasurementResponse(BaseModel):
+class SetSquareWaveformResponse(BaseModel):
     status: str
     message: Optional[str] = None
 
-class RestoreDefaultsRequest(BaseModel):
+class SetStandardWaveformRequest(BaseModel):
     instrument_name: str
     instrument_address: str
-    Channel: str = ""
+    channel: str
+    dc_offset: float
+    frequency: float
+    start_phase: float
+    waveform: Waveform
+    amplitude: float
+    additional_input: Any
 
-class RestoreDefaultsResponse(BaseModel):
+class SetStandardWaveformResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class ConfigureFrequencySweepRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    power_array: List[float]
+    dwell_time_array: List[float]
+    frequency_array: List[float]
+
+class ConfigureFrequencySweepResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class ConfigureChannelTrackingRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    track_mode: TrackMode
+    source_channel: SourceChannel
+
+class ConfigureChannelTrackingResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class SetTriggerSlopeRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    trigger_slope: TriggerSlope
+
+class SetTriggerSlopeResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class SetTriggerSourceRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    trigger_source: TriggerSource
+
+class SetTriggerSourceResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class DisableChannelOutputRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+
+class DisableChannelOutputResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class EnableChannelOutputRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+
+class EnableChannelOutputResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class InitRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    fgen_type: str
+    operation: OperationMode
+
+class InitResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class InitiateRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+
+class InitiateResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class ResetRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+
+class ResetResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class SendSoftwareTriggerRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+
+class SendSoftwareTriggerResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class SetLoadImpedanceRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    load_impedance: float
+
+class SetLoadImpedanceResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+
+class SetOutputImpedanceRequest(BaseModel):
+    instrument_name: str
+    instrument_address: str
+    channel: str
+    impedance: float
+
+class SetOutputImpedanceResponse(BaseModel):
     status: str
     message: Optional[str] = None
